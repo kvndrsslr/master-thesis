@@ -1,0 +1,347 @@
+\documentclass[tikz,border=10pt]{standalone}
+\usepackage{pgfplots}
+\pgfplotsset{compat=newest, scale only axis}
+\providecommand{\datapath}{gfx}
+%\usepackage{xcolor}
+
+\begin{document}
+    \begin{tikzpicture}
+        \begin{axis} [
+            view ={120}{10},
+            mesh/ordering=x varies,
+            colorbar = true,
+            colorbar style = {
+                ylabel = Standard Deviation
+            },
+           ymajorgrids,
+            xmajorgrids,
+            zmajorgrids,
+            xlabel style={sloped},
+            ylabel style={sloped},
+            zlabel style={sloped},
+            colormap/viridis,
+            width = 0.5*\textwidth,
+            ylabel = Mutation Probability,
+            xlabel = Mutation Rate,
+            zlabel = Mean Iterations,
+            zmode = log,
+            log basis z=2,
+            zmin = 0,
+            zmax = 512
+        ]
+
+            \addplot3[surf,mesh/rows=5,opacity=0.6,colormap/viridis] table [
+                x index = 1,
+                y index = 0,
+                z index = 2,
+                point meta = \thisrowno{3},
+                col sep = comma
+            ] {\datapath/data/phase1_1.00.txt};
+            \addplot3[surf,mesh/rows=5,opacity=0.25,colormap/viridis] table [
+                x index = 1,
+                y index = 0,
+                z index = 2,
+                point meta = \thisrowno{3},
+                col sep = comma
+            ] {\datapath/data/phase1_0.80.txt};
+            \addplot3[surf,mesh/rows=5,opacity=0.2,colormap/viridis] table [
+                x index = 1,
+                y index = 0,
+                z index = 2,
+                point meta = \thisrowno{3},
+                col sep = comma
+            ] {\datapath/data/phase1_0.60.txt};
+            \addplot3[surf,mesh/rows=5,opacity=0.15,colormap/viridis] table [
+                x index = 1,
+                y index = 0,
+                z index = 2,
+                point meta = \thisrowno{3},
+                col sep = comma
+            ] {\datapath/data/phase1_0.40.txt};
+            \addplot3[surf,mesh/rows=5,opacity=0.1,colormap/viridis] table [
+                x index = 1,
+                y index = 0,
+                z index = 2,
+                point meta = \thisrowno{3},
+                col sep = comma
+            ] {\datapath/data/phase1_0.20.txt};
+            \addplot3[surf,mesh/rows=5,opacity=0.05,colormap/viridis] table [
+                x index = 1,
+                y index = 0,
+                z index = 2,
+                point meta = \thisrowno{3},
+                col sep = comma
+            ] {\datapath/data/phase1_0.00.txt};
+           \node (A) at (axis cs:0.15,0.25,265) {$p_c=0.0$};
+           \node (B) at (axis cs:0.15,0.25,160) {$p_c=0.2$};
+           \node (C) at (axis cs:0.15,0.25,88) {$p_c=0.4$};
+           \node (D) at (axis cs:0.15,0.25,63) {$p_c=0.6$};
+           \node (D) at (axis cs:0.15,0.25,43) {$p_c=0.8$};
+           \node (D) at (axis cs:0.15,0.25,28) {$p_c=1.0$};
+                      
+        \end{axis}
+    \end{tikzpicture}
+    
+    
+    \begin{tikzpicture}
+        \begin{axis} [
+            view ={-60}{10},
+            mesh/ordering=x varies,
+            colorbar = true,
+            colorbar style = {
+                ylabel = Standard Deviation
+            },
+            colormap/viridis,
+            width = 0.5*\textwidth,
+           ymajorgrids,
+            xmajorgrids,
+            zmajorgrids,
+            xlabel style={sloped},
+            ylabel style={sloped},
+            zlabel style={sloped},
+            ylabel = Mutation Probability,
+            xlabel = Mutation Rate,
+            zlabel = Mean Iterations,
+            zmode = log,
+            zmin = 0.0,
+            zmax = 10,
+            clip=false
+        ]
+
+
+            \addplot3[surf,mesh/rows=5,opacity=0.6] table [
+                x index = 1,
+                y index = 0,
+                z index = 2,
+                point meta = \thisrowno{3},
+                col sep = comma
+            ] {\datapath/data/phase2_0.00.txt};
+            \addplot3[surf,mesh/rows=5,opacity=0.2] table [
+                x index = 1,
+                y index = 0,
+                z index = 2,
+                point meta = \thisrowno{3},
+                col sep = comma
+            ] {\datapath/data/phase2_0.20.txt};
+            \addplot3[surf,mesh/rows=5,opacity=0.2] table [
+                x index = 1,
+                y index = 0,
+                z index = 2,
+                point meta = \thisrowno{3},
+                col sep = comma
+            ] {\datapath/data/phase2_0.40.txt};
+            \addplot3[surf,mesh/rows=5,opacity=0.2] table [
+                x index = 1,
+                y index = 0,
+                z index = 2,
+                point meta = \thisrowno{3},
+                col sep = comma
+            ] {\datapath/data/phase2_0.60.txt};
+
+            \addplot3[surf,mesh/rows=5,opacity=0.2] table [
+                x index = 1,
+                y index = 0,
+                z index = 2,
+                point meta = \thisrowno{3},
+                col sep = comma
+            ] {\datapath/data/phase2_0.80.txt};
+\draw[-, gray,fill=red] (0.1,0.1,2.78) -- (0.1,0.1,73.8) node[above,black] {73.8 ($p_c=0.0$)} circle [radius=0.035];
+\draw[-, gray,fill=orange] (0.2,0.125,2.78) -- (0.2,0.125,36.99) node[above,black] {36.99 ($p_c=0.6$)} circle [radius=0.035];
+\draw[-, gray,fill=yellow] (0.2,0.125,2.78) -- (0.2,0.125,15.23) node[above,black] {15.23 ($p_c=0.0$)} circle [radius=0.035];
+           \node (A) at (axis cs:0.85,0.5,3.8) {$p_c=0.0$};
+           \node (B) at (axis cs:0.85,0.5,4.2) {$p_c=0.2$};
+           \node (C) at (axis cs:0.85,0.5,4.7) {$p_c=0.4$};
+           \node (D) at (axis cs:0.85,0.5,5.5) {$p_c=0.6$};
+           \node (E) at (axis cs:0.85,0.5,8) {$p_c=0.8$};
+
+        \end{axis}
+    \end{tikzpicture}
+%    
+%        \begin{tikzpicture}
+%        \begin{axis} [
+%            view ={-140}{10},
+%            mesh/ordering=x varies,
+%            width = 0.5*\textwidth,
+%           ymajorgrids,
+%            xmajorgrids,
+%            zmajorgrids,
+%            xlabel style={sloped},
+%            ylabel style={sloped},
+%            zlabel style={sloped},
+%            ylabel = Mutation Probability,
+%            xlabel = Mutation Rate,
+%            zlabel = Mean Iterations,
+%            zmode = log,
+%        ]
+%%           \node (A) at (axis cs:0.15,0.2,267) {$p_c=0.0$};
+%%           \node (B) at (axis cs:0.15,0.2,162) {$p_c=0.2$};
+%%           \node (C) at (axis cs:0.15,0.2,90) {$p_c=0.4$};
+%%           \node (D) at (axis cs:0.15,0.2,65) {$p_c=0.6$};
+%%           \node (D) at (axis cs:0.15,0.2,45) {$p_c=0.8$};
+%%           \node (D) at (axis cs:0.15,0.2,30) {$p_c=1.0$};
+%
+%            \addplot3[surf,mesh/rows=5,opacity=0.5,yellow,fill=yellow] table [
+%                x index = 1,
+%                y index = 0,
+%                z index = 2,
+%                col sep = comma
+%            ] {\datapath/data/phase1_1.00.txt};
+%
+%            \addplot3[surf,mesh/rows=5,opacity=0.5,blue,fill=blue] table [
+%                x index = 1,
+%                y index = 0,
+%                z index = 2,
+%                col sep = comma
+%            ] {\datapath/data/phase2_0.00.txt};
+%
+%        \end{axis}
+%    \end{tikzpicture}
+
+    \begin{tikzpicture}
+        \begin{axis} [
+            view ={-60}{20},
+            mesh/ordering=x varies,
+            colorbar = true,
+            colorbar style = {
+                ylabel = Mean Iterations to Termination
+            },
+            colormap/viridis,
+            width = 0.5*\textwidth,
+           ymajorgrids,
+            xmajorgrids,
+            zmajorgrids,
+            xlabel style={sloped},
+            ylabel style={sloped},
+            zlabel style={sloped},
+            ylabel = Mutation Probability,
+            xlabel = Mutation Rate,
+            zlabel = Perfect Runs,
+            clip=false
+        ]
+
+
+%            \addplot3[only marks,blue,opacity=0.6] table [
+%                x index = 1,
+%                y index = 0,
+%                z index = 2,
+%                point meta = \thisrowno{4},
+%                col sep = comma
+%            ] {\datapath/data/phase3_0.00.txt};
+%            \addplot3[only marks,green,opacity=0.2] table [
+%                x index = 1,
+%                y index = 0,
+%                z index = 2,
+%                point meta = \thisrowno{4},
+%                col sep = comma
+%            ] {\datapath/data/phase3_0.20.txt};
+%            \addplot3[only marks,magenta,opacity=0.2] table [
+%                x index = 1,
+%                y index = 0,
+%                z index = 2,
+%                point meta = \thisrowno{4},
+%                col sep = comma
+%            ] {\datapath/data/phase3_0.40.txt};
+%            \addplot3[only marks,orange,opacity=0.2] table [
+%                x index = 1,
+%                y index = 0,
+%                z index = 2,
+%                point meta = \thisrowno{4},
+%                col sep = comma
+%            ] {\datapath/data/phase3_0.60.txt};
+%
+%            \addplot3[only marks,yellow,opacity=0.2] table [
+%                x index = 1,
+%                y index = 0,
+%                z index = 2,
+%                point meta = \thisrowno{4},
+%                col sep = comma
+%            ] {\datapath/data/phase3_0.80.txt};
+%            \addplot3[only marks,red,opacity=0.2] table [
+%                x index = 1,
+%                y index = 0,
+%                z index = 2,
+%                point meta = \thisrowno{4},
+%                col sep = comma
+%            ] {\datapath/data/phase3_1.00.txt};
+            \addplot3[surf,mesh/rows=3,opacity=0.4] table [
+                x index = 1,
+                y index = 0,
+                z index = 7,
+                point meta = \thisrowno{2},
+                col sep = comma
+            ] {\datapath/data/phase3_0.00.txt};
+            
+            \addplot3[surf,mesh/rows=3,opacity=0.4] table [
+                x index = 1,
+                y index = 0,
+                z index = 7,
+                point meta = \thisrowno{2},
+                col sep = comma
+            ] {\datapath/data/phase3_0.20.txt};
+            \addplot3[surf,mesh/rows=3,opacity=0.4] table [
+                x index = 1,
+                y index = 0,
+                z index = 7,
+                point meta = \thisrowno{2},
+                col sep = comma
+            ] {\datapath/data/phase3_0.40.txt};
+            \addplot3[surf,mesh/rows=3,opacity=0.4] table [
+                x index = 1,
+                y index = 0,
+                z index = 7,
+                point meta = \thisrowno{2},
+                col sep = comma
+            ] {\datapath/data/phase3_0.60.txt};
+            \addplot3[surf,mesh/rows=3,opacity=0.4] table [
+                x index = 1,
+                y index = 0,
+                z index = 7,
+                point meta = \thisrowno{2},
+                col sep = comma
+            ] {\datapath/data/phase3_0.80.txt};
+            \addplot3[surf,mesh/rows=3,opacity=0.8] table [
+                x index = 1,
+                y index = 0,
+                z index = 7,
+                point meta = \thisrowno{2},
+                col sep = comma
+            ] {\datapath/data/phase3_1.00.txt};
+
+%\draw[-, gray,fill=red] (0.1,0.1,2.78) -- (0.1,0.1,73.8) node[above,black] {73.8 ($p_c=0.0$)} circle [radius=0.035];
+%\draw[-, gray,fill=orange] (0.2,0.125,2.78) -- (0.2,0.125,36.99) node[above,black] {36.99 ($p_c=0.6$)} circle [radius=0.035];
+%\draw[-, gray,fill=yellow] (0.2,0.125,2.78) -- (0.2,0.125,15.23) node[above,black] {15.23 ($p_c=0.0$)} circle [radius=0.035];
+%           \node (A) at (axis cs:0.85,0.5,3.8) {$p_c=0.0$};
+%           \node (B) at (axis cs:0.85,0.5,4.2) {$p_c=0.2$};
+%           \node (C) at (axis cs:0.85,0.5,4.7) {$p_c=0.4$};
+%           \node (D) at (axis cs:0.85,0.5,5.5) {$p_c=0.6$};
+%           \node (E) at (axis cs:0.85,0.5,8) {$p_c=0.8$};
+
+        \end{axis}
+
+
+    \end{tikzpicture}
+\begin{tikzpicture}
+        \begin{axis} [
+            view ={0}{90},
+            mesh/ordering=x varies,
+            colorbar = true,
+            colorbar style = {
+                ylabel = Perfect Runs,
+                ymax = 1000
+            },
+            colormap/viridis,
+            width = 0.5*\textwidth,
+            ylabel = Mutation Probability,
+            xlabel = Mutation Rate,
+            clip=false
+        ]
+    \addplot3[surf,shader=interp,mesh/rows=3] table [ 
+          x index = 1,
+          y index = 0,
+          z index = 7,
+          point meta = \thisrowno{7},
+          col sep = comma
+] {\datapath/data/phase3_1.00.txt};
+\end{axis}
+\end{tikzpicture}
+\end{document}

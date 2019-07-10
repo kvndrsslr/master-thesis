@@ -128,8 +128,7 @@
 \newcommand{\myfloatalign}{\centering} % to be used with each float for alignment
 \usepackage{subfig}
 % ****************************************************************************************************
-
-
+%\usepackage{xcolor}
 % ****************************************************************************************************
 % 5. Setup code listings
 % ****************************************************************************************************
@@ -156,7 +155,7 @@
 % ****************************************************************************************************
 
 
-
+\usepackage{sidenotes}
 
 % ****************************************************************************************************
 % 6. Last calls before the bar closes
@@ -165,6 +164,15 @@
 % Her Majesty herself
 % ********************************************************************
 \usepackage{classicthesis}
+
+\usepackage[mode=build, subpreambles]{standalone}
+\usepackage{xstring}
+
+\newcommand{\includestandalonewithpath}[3][]{%
+  \begingroup%
+  \newcommand{\datapath}{#2}%
+  \includestandalone[#1]{\datapath/#3}%
+  \endgroup}
 
 
 % ********************************************************************
