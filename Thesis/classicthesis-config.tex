@@ -143,7 +143,7 @@
   stringstyle=\rmfamily,
   numbers=none,%left,%
   numberstyle=\scriptsize,%\tiny
-  stepnumber=5,
+  stepnumber=1,
   numbersep=8pt,
   showstringspaces=false,
   breaklines=true,
@@ -152,11 +152,34 @@
   belowcaptionskip=.75\baselineskip
   %frame=L
 }
+
+\newcounter{nalg}[chapter] % defines algorithm counter for chapter-level
+\renewcommand{\thenalg}{\thechapter .\arabic{nalg}} %defines appearance of the algorithm counter
+\DeclareCaptionLabelFormat{algocaption}{Algorithm \thenalg} % defines a new caption label as Algorithm x.y
+
+\lstnewenvironment{algorithm}[1][] %defines the algorithm listing environment
+{   
+    \refstepcounter{nalg} %increments algorithm number
+    \captionsetup{labelformat=algocaption,labelsep=colon} %defines the caption setup for: it ises label format as the declared caption label above and makes label and caption text to be separated by a ':'
+    \lstset{ %this is the stype
+        mathescape=true,
+        frame=tB,
+        numbers=left, 
+        numberstyle=\tiny,
+        basicstyle=\scriptsize, 
+        keywordstyle=\color{RoyalBlue}\bfseries\em,
+        commentstyle=\color{Green}\ttfamily,
+        keywords={,input, output, return, datatype, function, in, if, else, foreach, while, begin, end, } %add the keywords you want, or load a language as Rubens explains in his comment above.
+        numbers=left,
+        xleftmargin=.04\textwidth,
+        #1 % this is to add specific settings to an usage of this environment (for instnce, the caption and referable label)
+    }
+}
+{}
 % ****************************************************************************************************
 
 
 \usepackage{sidenotes}
-
 % ****************************************************************************************************
 % 6. Last calls before the bar closes
 % ****************************************************************************************************
@@ -164,7 +187,7 @@
 % Her Majesty herself
 % ********************************************************************
 \usepackage{classicthesis}
-
+\usepackage{todonotes}
 \usepackage[mode=build, subpreambles]{standalone}
 \usepackage{xstring}
 
@@ -198,7 +221,7 @@
   pdfproducer={LaTeX with hyperref and classicthesis}%
 }
 
-
+\renewcommand*\thesidenote{\alph{sidenote}}
 % ********************************************************************
 % Setup autoreferences (hyperref and babel)
 % ********************************************************************

@@ -11,3 +11,17 @@ begin
 { do nothing }
 end;
 \end{lstlisting}
+
+\begin{algorithm}[caption={Integer division.}, label={alg1}]
+ input: int N, int D
+ output: int
+ begin
+   % a comment about the code
+   res $\gets$ 0
+   while N $\geq$ D 
+     N $\gets$ N - D
+     res $\gets$ res + 1      
+   end
+   return res
+ end       
+\end{algorithm}

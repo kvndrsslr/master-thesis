@@ -1,8 +1,67 @@
 \chapter{Introduction}
-
+\label{ch:intro}
 \section{Motivation}
-This thesis is written in just 14 days lmao.
-Just watch me type here and I can see it almost in real time wow thats actually quite impressive tho.
-Wow actually wowowwowo
-\section{Objective}
-\section{Goals/Reseach Questions}
+\label{sec:motivation}
+The Web of Data, also known as the Semantic Web, is growing from year to year\footnote{\url{https://lod-cloud.net}},
+  giving leeway to a vast amount of applications to harvest the knowledge cotained within the \ac{LOD} Cloud.
+  
+With growing numbers of datasets, we also see a growing number of domains being represented in the \ac{LOD} Cloud, leading to the need for a growing number of novel ontologies and vocabularies.
+%Despite of some attempts in the past\todo{cite}, today there exists no standardized centralized effort from the Semantic Web community to register and actively manage ontologies or vocabularies used in the \ac{LOD}, resulting in a large number of vocabularies.
+While some of these ontologies and vocabularies are well known and standardized by e.g. the \ac{W3C}, most are distributed over the web, hard to find and potentially model the same domain, therefore being redundant vocabularies.
+
+This leads to a retrieval problem of ontologies and vocabularies for dataset curators which the term ,,Ontology Dowsing''\sidenote{Dowsing is the practice of searching for ground water or metal ores using a Y-shaped rod.} was coined\footnote{\url{https://www.w3.org/wiki/Ontology_Dowsing}} in order to capture the problematic unscientific guessing nature which is most common today when trying to locate a suitable ontology or vocabulary for modeling data in RDF.
+As a result, applications that comsume the Web of Data also often define their own specific vocabularies as it is not feasible to support, let alone be aware of, all potentially applicable ontologies and vocabularies for the specific application domain.
+
+Moreover, limited resources on clients mean that the large data-sets in the \ac{LOD} Cloud, which are often schemaless due to the underlying Open World Assumption, have to be filtered and distilled before they can be used by applications.\\
+
+We refer to the processes needed to solve the above mentioned problems as RDF Dataset Enrichment.
+RDF Dataset Enrichment is a quintessential part of Linked Data Integration, which also consists of the \emph{linkage} and \emph{fusion} of RDF Datasets.
+
+While there has been a lot of work\todo{cite} on the automatic linkage and fusion, RDF Dataset Enrichment has been paid little attention to, despite there being a critical need for better solutions in order to truly enable  Semantic Web powered applications.
+
+\section{Objectives}
+\label{sec:objectives}
+In this thesis we address this shortcoming by extending \ac{DEER}\cite{sherif:2015a}, the only existing approach to automated RDF Dataset Enrichment we are aware of.
+While DEER implements a fixed set of so called Enrichment Functions and Operators and only allows chaining them lineraly in a pipeline, we argue that this approach is too limited to of use to the very specialized needs of real-world RDF Dataset Enrichment.
+Therefore, our first objective will be to build an extension of \ac{DEER}, called \acused{DEER2}\ac{DEER2}, which should be (1) highly modular, meaning that the framework should be easily extendable by third party developers in order to create specialized enrichment operators and (2) allow to represent the enrichment process as a \ac{DAG} of modular operations.
+These extensions should provide enough flexibility for dataset curators as well as application developers to use \ac{DEER2} in real world RDF Dataset Enrichment workflows.\\
+
+The original \ac{DEER} publications main contribution was the introduction of a Refinement Operator-based learning algorithm which enabled novice users to define adequate RDF Dataset Enrichment workflows.
+As highly modular applications in general require a lot of manual configuration of their components and therefore presume expert knowledge to precisely define how the modules operate and interact with each other, a machine learning based approach to automatic configuration will be the second and main objective of this paper.\\
+
+Since introducing \ac{DAG}-shaped RDF Dataset Enrichment workflows in \ac{DEER2}, the complexity of the learning problem is greatly increased in comparison to \ac{DEER}.
+We will therefore base our approach on \ac{GP} instead of Refinement Operators, since \ac{GP} is known for its ability to find good solutions for hard symbolic regression problems, albeit at the cost of being non-deterministic.
+
+\section{Design Goals and Reseach Questions}
+\label{sec:goals}
+We set the following goals for the design of \ac{DEER2}:
+
+\begin{itemize}
+  \item[\textbf{(G1)}] \ac{DEER2} should be highly modular
+  \item[\textbf{(G2)}] \ac{DEER2} should represent RDF Dataset Enrichment workflows efficiently as \acp{DAG}
+  \item[\textbf{(G3)}] \ac{DEER2} should include a \ac{GP} based learning algorithm for automatic configuration of RDF Dataset Enrichment workflows
+  \item[\textbf{(G4)}] \ac{DEER2} should improve all the identified shortcomings of \ac{DEER}.
+\end{itemize}
+
+\noindent
+In order to measure the success of our learning approach we will aim to answer the following research questions:
+
+\begin{itemize}
+  \item[\textbf{(Q1)}] What is the optimal set of hyperparameters?
+  \item[\textbf{(Q2)}] Does our approach generalize well?
+  \item[\textbf{(Q3)}] How does our approach perform on real world datasets?
+\end{itemize}
+
+\section{Structure of this Thesis}
+\label{sec:structure}
+The remainder of this thesis is structured as follows:
+In \autoref{ch:sota} we explore the State of the Art for fields relevant to this work and introduce some of the basic concepts required to understand this thesis.
+After that, we present our approach \ac{DEER2} in \autoref{ch:approach}.
+We evaluate our approach and answer the posed research questions in \autoref{ch:eval}.
+Finally, we conclude in \autoref{ch:conclusion}.\todo{Extend this}
+
+
+
+
+
+
