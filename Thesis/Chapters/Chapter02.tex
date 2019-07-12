@@ -1,25 +1,107 @@
-\chapter{State of the Art}
+\chapter{Background}
 \label{ch:sota}
-
 
 \section{Genetic Algorithms}
 \label{sec:ga}
+\Iac{GA} is a non-deterministic population-based global search metaheuristic that reformulates optimization problems in a vocabulary that makes heavy usage of metaphors on biological evolution, thus also being called a nature-inspired metaheuristic.
+
+\aclp{GA} typically represent solutions to a problem as bit vectors which correspond to the \emph{genotype} in biological evolution.
+These genotypes encode a set of parameters which are passed to a so called \emph{fitness function} which promotes a survival of the fittest and is thus the target of minimization or maximization in the underlying optimization problem.
+
+A fixed size population of genotypes, in this context also called individuals is initially generated at random using a \ac{PRNG}.
+This population of genotypes, parameterized by the population size ($\mu$), is then iteratively evolved where the iterations are typically referred to as \emph{generations}.
+In each generation, a subset of the population is selected to join a so called recombination pool, which is parameterized per the \emph{recombination pool size} ($\lambda$).
+The selection of individuals is carried out using a so called selection operator.
+An important property of a selection operator is the \emph{selective pressure}, which is informally described as the emphasis of selection on the best individual, where a high (small) selective pressure means a strong (weak) emphasis.
+We will discuss two of the most prominent selection operators further down in this text.
+
+The individuals selected for recombination are then passed in pairs to a crossover operator, which generates a pair of childs by swapping the bit vectors representing the individuals at a given crossover point\sidenote{Note that the literature contains a vast number of variations on the crossover operator such as multi-point crossover\cite{spears:1990a} and uniform crossover \cite{syswerda:1989a}, however they are of no particular interest to this work. There has also been a debate over the usefulness of crossover operators which resulted in  several extensive theoretical analyses with minimalistic toy problems with the result that they ,,can provably be useful''\cite{doerr:tcs2012a,spears:1991a}.}.
+The childs are then inserted into the next generations population together with the survivors, which are selected from the current population also using a selection operator.
+
+A mutation operator is then applied to each individual in the next generation with a certain \emph{mutation probability} ($\sigma$).
+The classic mutation operator mutates each selected individual by changing the bit value of a given bit in its bit vector representation with a probability denoted by the \emph{mutation rate} ($\rho$), i.e. a mutation rate of $\rho=\frac{1}{2}$ means that on average, half of the bits are changed to their opposing state.
+
+These steps of selection, crossover and mutation are repeated until a certain termination criteria holds, which could include a maximum number of generations, a target fitness value or a test of population convergence.
+
+Note that in the sense as defined above, \aclp{GA} were reportedly\cite{mitchell:1998a} first conceived by John Holland in 1960 as an extension of general $(\mu +\lambda)$ Evolutionary Algorithms, the novelty being the introduction of crossover and selection operators whereas previous iterations of Evolutionary Algorithms only made use of mutation operators.
+
+\paragraph{Selection Operators}
+While the literature contains a great number of selection operators, for sake of brevity we will only introduce the two selection operators used in the remainder of this text, namely the Elitist Selection\cite{mitchell:1998a} and the Tournament Selection\cite{miller:cs1995a}.
 
 
+The Elitist Selection is a simple selection procedure which includes the $N$ best performing individuals in the next generation.
+It is typically used in conjunction with another selection operator, as it would just lead to a stochastic hill climbing algorithm when used as only selection operator and there are much more efficient hill climbing algorithms, such as \cite{vaughan:ijc2005a} for discrete or \cite{altman:cm1970a} for continuous optimization problems.
+
+The Tournament Selection is one of the most established selection operators, as it has been proven able to adjust the selective pressure independently from the population size and fitness function scaling\cite{goldberg:1990a}.
+It is parameterized by the tournament size $k$ and the selection probability $p$.
+Initially, $k$ individuals from the given population are randomly selected to enter a tournament.
+Then, the $i$th best individual in the tournament w.r.t. the fitness function is selected to win the tournament with the probability $p(1-p)^{i-1}$.
+
+\newpage
 \subsection{Genetic Programming}
 \label{ssec:gp}
+
+\acf{GP} is a subfield of \aclp{GA} which originated from the application of a \ac{GA} in order to evolve computer programs in 1988 by John Koza\cite{koza:1990a}.
+While traditional \acp{GA} are commonly used for numerical optimization and search problems, \ac{GP} can be used for symbolic regression and classification.
+
+In \acl{GP}, programs are usually encoded as trees of operations and terminals, but other encodings have also been proposed.
+For example, Graff et al.\cite{graff:2016a} use \acp{DAG} to encode python programs, and Kvasnièka and Pospíchal\cite{kvasnieka:1998a} introduced a condensed encoding of \acp{DAG}, dubbed ,,Column Tables'', which we will adapt and use in this work (see \autoref{ssec:enrichmentgraph}).
+
 
 
 \subsection{Multi Expresssion Programming}
 \label{ssec:mep}
 
+\acf{MEP}, originally introduced by Ferreira\cite{ferreira:cs2001a} as ,,Gene Expression Programming'' denotes a special kind of \acl{GP} where the genotype of an individual represents multiple solutions or subsolutions that has gained traction in recent years.
+Only the best amongst these multiple solutions is then used as the effective solution, also called the \emph{phenotype} of the individual.
+This technique is used in problems where it does incur no additional cost to keep track of the fitness of subsolutions, such as is generally the case with the evaluation of a program represented as a tree: it can be easily seen that when evaluating such a tree-shaped program, one has to visit each node anyway in order to compute its result.
 
+It can be used to evolve programs with the same complexity as traditional \ac{GP} but much more efficient and excels in multiple-output problems.
+To this end it has been successfully applied to the TSP\cite{oltean:c2015a}, data prediction\cite{zhang:i2013a}, 
+software effort estimation\cite{akram:c2018a}, on-the-fly hyperparameter optimization for Evolutionary Algorithms\cite{oltean:2003a} and digital curcuit design\cite{oltean:2004b}.
+
+\newpage
 \subsection{Semantic Genetic Operators}
 \label{ssec:sgo}
 
-\newpage
+Semantic Genetic Operators are a special kinds of crossover and mutation operators which take into account the semantics of a genotype rather than just discerning it as a bit vector without any further interpretation.
+They are therefore aware of the specific genotype encoding and manipulate the individuals w.r.t. the solution space rather than the encoding space.
+
+Their recent successful application to a number of problems\cite{chen:2017a,forstenlechner:2017a,peng:ia2019a,suarez:rcs2015a} indicates that taking semantics into account is a promising novel direction for \ac{GP}.
+
 \section{Linked Data}
 \label{sec:ld}
+
+Linked Data\cite{berners-lee:2006a, bizer:2008a, bizer:ijsis2009a} is a term coined by Tim Berner-Lee\cite{berners-lee:2006a} in 2006.
+It refers to data available on the Web that is (1) structured, (2) uses \acp{URI} as identifiers and (3) is interlinked with other data on the Web.
+Linked Data is enabled by the use of standard Web technologies such as the \ac{HTTP}, the \ac{RDF} and the \ac{SPARQL}.
+It is closely related to the term Semantic Web, which describes a Web of Data which, in opposition to the human-readable Web of Documents is specifically engineered to be machine-readable.
+The Semantic Web promotes a high interconnectedness of datasets by interlinking them with eathother, thereby enabling the ability to consume data from multiple datasets at once using semantic queries, e.g. using the \ac{SPARQL} protocol.
+
+%
+%
+%Let $\mathcal{D}$ be the set of all RDF Datasets.
+%
+%\begin{align}
+%%  \varepsilon \in \mathcal{E} :& \mathcal{D}^n \to \mathcal{D}^m \\
+%  \mathbf{V}_r \coloneq & \{v \in \mathbf{V} \mid \forall u \in \mathbf{V} (u, v) \notin \mathbf{E}\} \\
+%  \mathbf{V}_l \coloneq & \{v \in \mathbf{V} \mid \forall u \in \mathbf{V} (v, u) \notin \mathbf{E}\} \\
+%  \mathbf{V}_i \coloneq & \mathbf{V}
+%  \backslash (\mathbf{V}_r \cup \mathbf{V}_l)
+%\end{align}
+%  
+%We call a function an \emph{Enrichment Operator}.
+%We call $n$ the in degree and $m$ the out degree of $o$.
+%
+%An Enrichment Graph $G=(V,E,L)$ is a Directed Acyclic Labeled Multigraph.\\
+%The root vertices $V_r=\{v \in V|\not\exists u \in V, (u, v) \in E\}$ of an Enrichment Graph represent input RDF Datasets emitters.\\The leaf vertices $V_l=\{v \in V|\not\exists u \in V, (v, u) \in E\}$ of an Enrichment Graph represent output RDF Datasets acceptors.\\The intermediate vertices $V_i=V\setminus V_r \setminus V_l $ represent Enrichment Operators.\\
+%The function $\Zeta : V \to \mathcal{E}$ maps vertices to the entities they represent.\\
+%An edge $(u, v) \in E \subseteq V \times V $ represents flow of data.\\The label function $L:E\to 2^\{(\mathbb{N} \times \mathbb{N})\}$ induces a mapping from the components of images and arguments of represented entities, i.e. for $e=(u,v)$, an entry of the label multiset $l\in L(e) = (i, j)$ establishes a flow of data from the $i$th component in the image of $O(u)$ to the $j$th argument of $O(v)$.
+%
+%An Enrichment Graph $G=(V,E,L)$ with $\forall e\in E: |L(e)|=1$ is called an Enrichment Pipeline or a type 0 Enrichment Graph.\\
+%An Enrichment Graph $G=(V,E,L)$ with $\exists e\in E: |L(e)|>1 \land |V_r|=|V_l|=1$ is called a type 1 Enrichment Graph.\\
+%An Enrichment Graph $G=(V,E,L)$ with $\forall e\in E: |L(e)|>1 \land |V_r|>1 \land |V_l|=1$ is called a type 2 Enrichment Graph.\\
+%An Enrichment Graph $G=(V,E,L)$ with $\forall e\in E: |L(e)|>1 \land |V_r|>1 \land |V_l|>1$ is called a type 3 Enrichment Graph.
 
 
 \subsection{Ontologies}
@@ -46,5 +128,5 @@
 \label{ssec:enrichment}
 
 
-\subsection{\ac{DEER}}
+\subsection{\acl{DEER}}
 \label{ssec:deer}

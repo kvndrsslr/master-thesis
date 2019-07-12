@@ -61,7 +61,6 @@
 % ********************************************************************
 % Setup, finetuning, and useful commands
 % ********************************************************************
-\providecommand{\mLyX}{L\kern-.1667em\lower.25em\hbox{Y}\kern-.125emX\@}
 \newcommand{\ie}{i.\,e.}
 \newcommand{\Ie}{I.\,e.}
 \newcommand{\eg}{e.\,g.}
@@ -133,7 +132,6 @@
 % 5. Setup code listings
 % ****************************************************************************************************
 \usepackage{listings}
-%\lstset{emph={trueIndex,root},emphstyle=\color{BlueViolet}}%\underbar} % for special keywords
 \lstset{language=[LaTeX]Tex,%C++,
   morekeywords={PassOptionsToPackage,selectlanguage},
   keywordstyle=\color{RoyalBlue},%\bfseries,
@@ -188,14 +186,15 @@
 % ********************************************************************
 \usepackage{classicthesis}
 \usepackage{todonotes}
-\usepackage[mode=build, subpreambles]{standalone}
+%\usepackage[mode=build, subpreambles]{standalone}
 \usepackage{xstring}
 
-\newcommand{\includestandalonewithpath}[3][]{%
-  \begingroup%
-  \newcommand{\datapath}{#2}%
-  \includestandalone[#1]{\datapath/#3}%
-  \endgroup}
+ 
+%\newcommand{\includestandalonewithpath}[3][]{%
+%  \begingroup%
+%  \newcommand{\datapath}{#2}%
+%  \includestandalone[#1]{\datapath/#3}%
+%  \endgroup}
 
 
 % ********************************************************************
@@ -259,10 +258,17 @@
 \makeatother
 
 
+%\makeatletter
+%\patchcmd\@acf{\AC@acl}{\AC@foo}{}{}
+%\patchcmd\@acf{\AC@acl}{\AC@foo}{}{}
+%\patchcmd\@acf{\AC@foo}{\hskip\z@\AC@acl}{}{}
+%\patchcmd\@acf{\AC@foo}{\hskip\z@\AC@acl}{}{}
+%\makeatother
+
 % ********************************************************************
 % Development Stuff
 % ********************************************************************
-\listfiles
+%\listfiles
 %\PassOptionsToPackage{l2tabu,orthodox,abort}{nag}
 %  \usepackage{nag}
 %\PassOptionsToPackage{warning, all}{onlyamsmath}
@@ -300,3 +306,5 @@
 % https://bitbucket.org/amiede/classicthesis/issues/45/problema-testatine-su-classicthesis-style
 % ********************************************************************
 % ****************************************************************************************************
+
+% \usepackage{marginfix}
