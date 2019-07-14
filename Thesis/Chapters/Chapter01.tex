@@ -23,15 +23,15 @@ While there has been a lot of work on the automatic linkage and fusion, \ac{RDF}
 \section{Objectives}
 \label{sec:objectives}
 In this thesis we address this shortcoming by extending \ac{DEER}\cite{sherif:2015a}, the only existing approach to automated \ac{RDF} Dataset Enrichment we are aware of.
-While DEER implements a fixed set of so called Enrichment Functions and Operators and only allows chaining them lineraly in a pipeline, we argue that this approach is too limited to of use to the very specialized needs of real-world \ac{RDF} Dataset Enrichment.
-Therefore, our first objective will be to build an extension of \ac{DEER}, called \acused{DEER2}\ac{DEER2}, which should be (1) highly modular, meaning that the framework should be easily extendable by third party developers in order to create specialized enrichment operators and (2) allow to represent the enrichment process as a \ac{DAG} of modular operations.
+While DEER implements a fixed set of so called enrichment functions and only allows chaining them lineraly in a pipeline, we argue that this approach is too limited to of use to the very specialized needs of real-world \ac{RDF} Dataset Enrichment.
+Therefore, our first objective will be to build an extension of \ac{DEER}, called \acused{DEER2}\ac{DEER2}, which should be (1) highly modular, meaning that the framework should be easily extendable by third party developers in order to create specialized enrichment functions and (2) allow to represent the enrichment process as a \ac{DAG} of modular operations.
 These extensions should provide enough flexibility for dataset curators as well as application developers to use \ac{DEER2} in real world \ac{RDF} Dataset Enrichment workflows.\\
 
-The original \ac{DEER} publications main contribution was the introduction of a Refinement Operator-based learning algorithm which enabled novice users to define adequate \ac{RDF} Dataset Enrichment workflows.
+The original \ac{DEER} publications main contribution was the introduction of a refinement operator-based learning algorithm which enabled novice users to define adequate \ac{RDF} Dataset Enrichment workflows.
 As highly modular applications in general require a lot of manual configuration of their components and therefore presume expert knowledge to precisely define how the modules operate and interact with each other, a machine learning based approach to automatic configuration will be the second and main objective of this paper.\\
 
 Since introducing \ac{DAG}-shaped \ac{RDF} Dataset Enrichment workflows in \ac{DEER2}, the complexity of the learning problem is greatly increased in comparison to \ac{DEER}.
-We will therefore base our approach on \ac{GP} instead of Refinement Operators, since \ac{GP} is known for its ability to find good solutions for hard symbolic regression problems, albeit at the cost of being non-deterministic.
+We will therefore base our approach on \ac{GP} instead of refinement operators, since \ac{GP} is known for its ability to find good solutions for hard symbolic regression problems, albeit at the cost of being non-deterministic.
 
 \section{Design Goals and Reseach Questions}
 \label{sec:goals}
@@ -41,7 +41,7 @@ We set the following goals for the design of \ac{DEER2}:
   \item[\textbf{(G1)}] \ac{DEER2} should be highly modular
   \item[\textbf{(G2)}] \ac{DEER2} should represent \ac{RDF} Dataset Enrichment workflows efficiently as \acp{DAG}
   \item[\textbf{(G3)}] \ac{DEER2} should include a \ac{GP} based learning algorithm for automatic configuration of \ac{RDF} Dataset Enrichment workflows
-  \item[\textbf{(G4)}] \ac{DEER2} should improve all the identified shortcomings of \ac{DEER}.
+  \item[\textbf{(G4)}] \ac{DEER2} should improve on all of the identified shortcomings of \ac{DEER}.
 \end{itemize}
 
 \noindent

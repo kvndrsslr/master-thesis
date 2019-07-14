@@ -28,13 +28,13 @@
 % (see ClassicThesis.pdf for more information):
 % ****************************************************************************************************
 \PassOptionsToPackage{
-  drafting=true,    % print version information on the bottom of the pages
+  drafting=false,    % print version information on the bottom of the pages
   tocaligned=false, % the left column of the toc will be aligned (no indentation)
   dottedtoc=true,  % page numbers in ToC flushed right
   eulerchapternumbers=true, % use AMS Euler for chapter font (otherwise Palatino)
   linedheaders=false,       % chaper headers will have line above and beneath
   floatperchapter=true,     % numbering per chapter for all floats (i.e., Figure 1.1)
-  eulermath=true,  % use awesome Euler fonts for mathematical formulae (only with pdfLaTeX)
+  eulermath=false,  % use awesome Euler fonts for mathematical formulae (only with pdfLaTeX)
   beramono=true,    % toggle a nice monospaced font (w/ bold)
   palatino=true,    % deactivate standard font for loading another one, see the last section at the end of this file for suggestions
   style=classicthesis % classicthesis, arsclassica
@@ -55,7 +55,7 @@
 \newcommand{\myDepartment}{Lehrstuhl Betriebliche Informationssysteme\xspace}
 \newcommand{\myUni}{Universität Leipzig\xspace}
 \newcommand{\myLocation}{Leipzig\xspace}
-\newcommand{\myTime}{July 2019\xspace}
+\newcommand{\myTime}{Juli 2019\xspace}
 \newcommand{\myVersion}{}
 
 % ********************************************************************
@@ -127,7 +127,7 @@
 \newcommand{\myfloatalign}{\centering} % to be used with each float for alignment
 \usepackage{subfig}
 % ****************************************************************************************************
-%\usepackage{xcolor}
+\PassOptionsToPackage{table}{xcolor}
 % ****************************************************************************************************
 % 5. Setup code listings
 % ****************************************************************************************************
@@ -185,17 +185,11 @@
 % Her Majesty herself
 % ********************************************************************
 \usepackage{classicthesis}
-\usepackage{todonotes}
-%\usepackage[mode=build, subpreambles]{standalone}
+\usepackage{marginfix}
+\usepackage[obeyFinal]{todonotes}
+\usepackage[mode=build]{standalone}
 \usepackage{xstring}
-
- 
-%\newcommand{\includestandalonewithpath}[3][]{%
-%  \begingroup%
-%  \newcommand{\datapath}{#2}%
-%  \includestandalone[#1]{\datapath/#3}%
-%  \endgroup}
-
+\usepackage{array}
 
 % ********************************************************************
 % Fine-tune hyperreferences (hyperref should be called last)
@@ -258,12 +252,12 @@
 \makeatother
 
 
-%\makeatletter
-%\patchcmd\@acf{\AC@acl}{\AC@foo}{}{}
-%\patchcmd\@acf{\AC@acl}{\AC@foo}{}{}
-%\patchcmd\@acf{\AC@foo}{\hskip\z@\AC@acl}{}{}
-%\patchcmd\@acf{\AC@foo}{\hskip\z@\AC@acl}{}{}
-%\makeatother
+\makeatletter
+\patchcmd\@acf{\AC@acl}{\AC@foo}{}{}
+\patchcmd\@acf{\AC@acl}{\AC@foo}{}{}
+\patchcmd\@acf{\AC@foo}{\hskip\z@\AC@acl}{}{}
+\patchcmd\@acf{\AC@foo}{\hskip\z@\AC@acl}{}{}
+\makeatother
 
 % ********************************************************************
 % Development Stuff
@@ -306,5 +300,17 @@
 % https://bitbucket.org/amiede/classicthesis/issues/45/problema-testatine-su-classicthesis-style
 % ********************************************************************
 % ****************************************************************************************************
-
-% \usepackage{marginfix}
+\usetikzlibrary{shapes.geometric,calc,arrows}
+\newcommand\score[2]{
+\pgfmathsetmacro\pgfxa{#1+1}
+\tikzstyle{scorestars}=[star, star points=5, star point ratio=2.25, draw,inner sep=1.3pt,anchor=outer point 3]
+  \begin{tikzpicture}[baseline]
+    \foreach \i in {1,...,#2} {
+    \pgfmathparse{(\i<=#2-#1?"white":"RoyalBlue")}
+    \edef\starcolor{\pgfmathresult}
+    \draw (\i*1.75ex,0) node[name=star\i,scorestars,fill=\starcolor]  {};
+   }
+  \end{tikzpicture}
+}
+\counterwithout{footnote}{chapter}
+\DeclareMathOperator*{\argmax}{arg\,max} % thin space, limits underneath in displays

@@ -1,20 +1,353 @@
 \chapter{Approach}
 \label{ch:approach}
+After the analysis of the \ac{DEER} framework, which inspired this work, we now have a clear understanding of the design goals according to which we shall now develop our approach.
+The presentation of our approach in this chapter is structured into three parts.
+In the first part we will develop a formal specification of our approach.
+The second part contains implementation details about the system we implemented following our formal specification.
+Finally, in the third part, we describe the design of a \ac{GP}-based learning algorithm based on our previous formal specification.
 
-\section{\acl{DEER2}}
-\label{sec:deer2}
+%\section{DEER 2: A Modular Framework for Arbitrary RDF Dataset Enrichment}
+%\label{sec:deer2}
 
-\subsection{The Enrichment Graph}
+%Our framework \ac{DEER2} 
+\todo{write short introduction}
+
+\section{Formal Specification}
+\label{sec:formalspec}
+
+\subsection{Dataset Operator}
+
+Let $\mathcal{D}$ be the set of all \ac{RDF} Datasets.
+A function
+\begin{equation}
+\begin{aligned}
+\mathbb{o}_{(n,m)}\colon \mathcal{D}^n \times  \mathcal{D}  &\to \mathcal{D}^m \\
+\left(\left(D_{1}^{(\text{in})}, \dots, D_{n}^{(\text{in})}\right), P\right) & \mapsto \left( D_{1}^{(\text{out})}, \dots, D_{m}^{(\text{out})} \right)
+\end{aligned}
+\end{equation}
+is called a \textbf{dataset operator}.
+We call $n$ the in-degree and $m$ the out-degree of $\mathbb{o}_{(n,m)}$ and will resort to writing just $\mathbb{o}$ when $n,m$ are clear or if the lack of their specification will incur no loss of generality. The set of all dataset operators is denoted as $\mathbb{O}$\\
+
+Informally, a dataset operator takes a parameter datset and $n$ input datasets as arguments and returns $m$ output datasets. We specify the following naming scheme for dataset operators:
+\begin{itemize}
+  \item $\mathbb{o}_{(0,1)}$ is called a \textbf{dataset emitter},
+  \item $\mathbb{o}_{(1,0)}$ is called a \textbf{dataset acceptor},
+  \item $\mathbb{o}_{(n,m)}$ is called an \textbf{enrichment operator} for $n,m>0$ and
+  \item $\mathbb{o}_{(n,1)}$ is called a \textbf{confluent enrichment operator}.
+\end{itemize}
+
+Moreover, a function
+\begin{equation}
+\begin{aligned}
+\mathbb{p}_{(n,m)}\colon \mathcal{D}^n &\to \mathcal{D}^m \\
+\left(D_{1}^{(\text{in})}, \dots, D_{n}^{(\text{in})}\right) & \mapsto \left( D_{1}^{(\text{out})}, \dots, D_{m}^{(\text{out})} \right)
+\end{aligned}
+\end{equation}
+
+is called a \textbf{parameterized dataset operator}. We denote the set of all parameterized dataset operators as $\mathbb{P}$.
+
+We define a \emph{configuration function} 
+
+\begin{equation}
+\begin{aligned}
+\mathbb{c}\colon \mathbb{O} \times \mathcal{D} &\to \mathbb{P} \\
+ \left( \mathbb{o}_{(n,m)}, P \right) \mapsto \mathbb{p}_{(n,m)}
+\end{aligned}
+\label{eq:cfg}
+\end{equation}
+
+which takes a given dataset operator $\mathbb{o}$ together with a parameter dataset $P$ and returns a parameterized dataset operator $\mathbb{p}$, which operates under the same semantics as $\mathbb{o}$ if it receives $P$ as its last argument.
+
+\begin{align*}
+\mathbb{o}_{(n,m)}\colon \mathcal{D}^n \times  \mathcal{D}  &\to \mathcal{D}^m \\
+\left(\left(D_{1}^{(\text{in})}, \dots, D_{n}^{(\text{in})}\right), P\right) & \mapsto \left( D_{1}^{(\text{out})}, \dots, D_{m}^{(\text{out})} \right)
+\end{align*}
+
+\subsection{Enrichment Graph}
 \label{ssec:enrichmentgraph}
 
-\subsection{On Modularity}
+\begin{align}
+  \mathbf{V}_r \coloneq & \{v \in \mathbf{V} \mid \forall u \in \mathbf{V} (u, v) \notin \mathbf{E}\} \label{eq:vr} \\
+  \mathbf{V}_l \coloneq & \{v \in \mathbf{V} \mid \forall u \in \mathbf{V} (v, u) \notin \mathbf{E}\} \label{eq:vl} \\
+  \mathbf{V}_i \coloneq & \mathbf{V}
+  \backslash (\mathbf{V}_r \cup \mathbf{V}_l) \label{eq:vi}
+\end{align}
+
+An Enrichment Graph $G=(\mathbf{V},\mathbf{E},\mathbf{L})$ is a Directed Acyclic Labeled Multigraph.
+A mapping $\Phi\colon \mathbf{V} \to \mathbb{P}$ maps vertices to parameterized dataset operators.
+We call the subsets of vertices per Equations \ref{eq:vr}~-~\ref{eq:vi} root vertices, leaf vertices and intermediate vertices, respectively.
+
+\begin{align}
+v \in \mathbf{V}_r \land \mathbb{p}_{(n,m)} = \Phi(v) & \to n = 0 \land m = 1 \label{eq:ax1} \\
+v \in \mathbf{V}_l \land \mathbb{p}_{(n,m)} = \Phi(v) & \to n = 1 \land m = 0 \label{eq:ax2} \\
+v \in \mathbf{V}_i \land \mathbb{p}_{(n,m)} = \Phi(v) & \to n > 0 \land m > 0 \label{eq:ax3}
+\end{align}
+
+The set of axioms defined per Equations~\ref{eq:ax1}~-~\ref{eq:ax3} hold for Enrichment Graphs.
+Informally, they mean that all root vertices represent parameterized dataset emitters, all leaf vertices represent parameterized dataset acceptors and all intermediate vertices represent parameterized enrichment operators w.r.t. $\Phi$.
+
+\begin{equation}
+\begin{aligned}
+  \mathbf{L}\colon E & \to 2^{(\mathbb{N} \times \mathbb{N})} \\
+  e = (u,v) & \mapsto \left\{ (i_1, j_1), \dots, (i_n, j_n) \right\}
+\end{aligned}
+\label{eq:labelf}
+\end{equation}
+An edge $(u, v) \in \mathbf{E} \subseteq \mathbf{V} \times \mathbf{V} $ represents flow of data. Consider the definitions given in \autoref{eq:labelf}. The label function $\mathbf{L}$ induces a mapping from the components of images of $\Phi(u)$ to the arguments of $\Phi(v)$. That is, for $e=(u,v)$, an entry of the label multiset $l\in \mathbf{L}(e) = (i, j)$ establishes a flow of data from the $i$th component in the image of $\Phi(u)$ to the $j$th argument of $\Phi(v)$.
+
+\begin{equation}
+  \begin{aligned}
+    \forall e_1, e_2 \in \mathbf{E} \colon e_1=(u_1,v_1) \land e_2=(u_2,v_2) \land v_1 = v_2\\ \to
+    \forall l_1 \in \mathbf{L}(e_1) \forall l_2 \in \mathbf{L}(e_2) \colon l_1 = (i_1, j_1) \land l_2 = (i_2, j_2) \land j_1\neq j_2
+  \end{aligned}
+  \label{eq:labelcrit}
+\end{equation}
+
+In order to be deemed valid, the label function has to abide by the criteria defined in \autoref{eq:labelcrit}.
+Informally, this criteria forbids multiple mappings to the same argument of the same dataset operator.
+
+\begin{figure}[tb]
+\centering
+  \begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=2.8cm,
+                    semithick]
+  \node[shape=circle,fill=red,draw=none,text=white] (A)                    {$\mathbb{p}_2$};
+  \node[shape=circle,fill=red,draw=none,text=white] (B) [above right of=A] {$\mathbb{p}_1$};
+  \node[shape=circle,fill=red,draw=none,text=white] (D) [below right of=A] {$\mathbb{p}_4$};
+  \node[shape=circle,fill=red,draw=none,text=white] (C) [below right of=B] {$\mathbb{p}_3$};
+  \node[shape=circle,fill=red,draw=none,text=white] (E) [below of=D]       {$\mathbb{p}_5$};
+
+  \path (A) edge    node [sloped, above] {(1,2)}           (C)
+  edge [bend right] node [sloped, below] {(1,1)} (E)
+        (B) edge    node [sloped, above]{(1,1)}          (C)
+            edge    node [sloped, above]{(1,1)}          (A)
+        (C) edge    node [sloped, below]{(1,1)}          (D)
+            edge  [bend left]   node [sloped, below] {(1,3)}  (E)
+        (D) edge    node [sloped, above] {(1,2)} (E);
+\end{tikzpicture}
+\caption{Example of an inherently confluent enrichment graph}
+\label{fig:exampleenrichmentgraph}
+\end{figure}
+
+We present a categorization of Enrichment Graphs as follows. Let $G=(\mathbf{V},\mathbf{E},\mathbf{L})$ be an Enrichment Graph.
+
+\begin{itemize}
+  \item If $|\mathbf{V}_r|=|\mathbf{V}_l|=1$ and for all vertices $u,v\in\mathbf{V}$ with $u\neq v$ there exists only a single walk from $u$ to $v$, then $G$ is called a linear Enrichment Graph.
+  \item If $|\mathbf{V}_r|=|\mathbf{V}_l|=1$ and there is a pair of vertices $u,v\in\mathbf{V}$,  $u\neq v$ for which there there exist multiple walks from $u$ to $v$, then $G$ is called a semi-linear Enrichment Graph.
+  \item If $|\mathbf{V}_r|>1 \land |\mathbf{V}_l|=1$, then $G$ is called a confluent Enrichment Graph.
+  \item Otherwise, $G$ is called a general Enrichment Graph.
+\end{itemize}
+
+
+In order to evaluate an Enrichment Graph $G=(\mathbf{V},\mathbf{E},\mathbf{L})$, we start with obtaining the \ac{RDF} Datasets as output by the dataset emitters in $\Phi(\mathbf{V}_r)$.
+These datasets then flow throught the graph as specified by the semantics we associated with the edge set $\mathbf{E}$ and the label multiset $\mathbf{L}$ above.
+Whenever a parameterized dataset operator $\mathbb{p}_{(n,m)}\in\Phi(\mathbf{V}_i)$ has received all its $n$ input datasets, it is evaluated and the flow through the graph continues until eventually all vertices have been evaluated.
+
+\subsection{Enrichment Table}
+
+We call a confluent Enrichment Graphs in which only confluent parameterized enrichment operators are allowed, i.e. $\forall v \in \mathbf{V}_i \colon \mathbb{p}_{(n,m)} = \Phi(v) \to m = 1$, an inherently confluent Enrichment Graph.
+An example of such an Enrichment Graph is given in \autoref{fig:exampleenrichmentgraph}.
+
+An enrichment table is a condensed representation for inherently confluent Enrichment Graphs.
+
+\begin{equation}
+  N(O) \coloneq \max \left\{ k \mid \mathbb{o}_{(n,m)} \in O, \, k=n \right\}
+  \label{eq:maxin}
+\end{equation}
+
+Let $P$ be a set of parameterized dataset operators.
+Moreover, let $N(P)$ denote the maximum in-degree in $P$ as given in \ref{eq:maxin}.
+Now, an enrichment table is a table with $2+N(P)$ columns and $|P|$ rows, where each row corresponds to one parameterized dataset operator.
+
+The idea behind this representation is that we can go through this table from top to bottom and evaluate the corresponding parameterized dataset operators using only the results of the above rows.
+Note that this idea was taken from\cite{kvasnieka:1998a}, where the authors call these tables ,,Column Tables''. \\
+
+The structure of the enrichment table is defined as follows.
+The first column contains parameterized dataset operators, the second column contains the in-degree of the parameterized dataset operator in the first column and the rest of the columns contain the indices of the rows used as input to the corresponding parameterized dataset operator.
+
+The example in \autoref{tab:exampleenrichmentgraph} depicts the enrichment table representation of the enrichment graph given in \autoref{fig:exampleenrichmentgraph}.\\
+
+\begin{table}[tb]
+\caption[An example enrichment table]{An example enrichment table which is equivalent to the inherently confluent enrichment graph in \autoref{fig:exampleenrichmentgraph}}
+\centering
+\begin{tabular}{c|c|c|c|c}
+  $\mathbb{p}_1$ & 0 & 0 & 0 & 0\\ \hline
+  $\mathbb{p}_2$ & 1 & 1 & 0 & 0\\ \hline
+  $\mathbb{p}_3$ & 2 & 1 & 2 & 0\\ \hline
+  $\mathbb{p}_4$ & 1 & 3 & 0 & 0\\ \hline
+  $\mathbb{p}_5$ & 3 & 2 & 4 & 3
+\end{tabular}
+\label{tab:exampleenrichmentgraph}
+\end{table}
+
+A method to obtain an enrichment table from a given inherently confluent enrichment graph can be taken from \cite{kvasnieka:1998a} and we will not reformulate the whole method here.
+
+In essence, the authors state that a Column Table can be easily obtained from the adjacency matrix of a given \ac{DAG} $G=(\mathbf{V},\mathbf{E})$ \sidenote{Please note that our defintion of inherently confluent enrichment graphs corresponds to general \acp{DAG} without loss of generality.} when an indexing $\phi \colon \{1,\dots,|\mathbf{V}|\}$ of its vertices is provided such that $\forall(v,v')\in \mathbf{E} \colon \phi(v) > \phi(v')$.\\
+
+%However, as the authors in \cite{kvasnieka:1998a} did not supply a method to obtain an indexing $\phi$ with the above mentioned property, we will provide one in our implementation details in \autoref{sec:impl}.\\
+
+In order to obtain the results of a given enrichment table $\mathbf{T}$, it just has to be evaluated from top to bottom.
+The last result is considered to be the result of the whole table.
+
+The evaluation result in row $i$ of table $\mathbf{T}$ is denoted as $\mathbf{T}_i$.
+We will now show this process exemplarily for the enrichment table given in \autoref{tab:exampleenrichmentgraph}.
+\begin{equation*}
+\begin{aligned}
+  \mathbf{T}_1 & = D\in\mathcal{D} \\
+  \mathbf{T}_2 & = \mathbb{p}_2\left(D\right) \\
+  \mathbf{T}_3 & = \mathbb{p}_3\left(D, \mathbb{p}_2\left(D\right)\right) \\
+  \mathbf{T}_4 & = \mathbb{p}_4\left(\mathbb{p}_3\left(D, \mathbb{p}_2\left(D\right)\right)\right) \\
+  \mathbf{T}_5 & = \mathbb{p}_5\left(\mathbb{p}_2\left(D\right),\mathbb{p}_4\left(\mathbb{p}_3\left(D, \mathbb{p}_2\left(D\right)\right)\right), \mathbb{p}_3\left(D, \mathbb{p}_2\left(D\right)\right)\right)
+\end{aligned}
+\end{equation*}
+%
+%\begin{enumerate}
+%  \item As $\mathbb{p}_1$ is a parameterized dataset emitter, we evaluate it to a constant $D\in\mathcal{D}$.
+%  \item Now, the result of our second row yields $$, as the only input column points to row 1.
+%  \item The result of the third row is found as $$
+%  \item{ Subsequently, the fourth row is evaluated to $$
+%  \item Finally, our last row, which corresponds to a parameterized dataset acceptor, is found as $$
+%\end{enumerate}
+
+\subsection{Enrichment Specification}
+
+An enrichment specification is a pair $\mathcal{E}=(G, M)$, where $G$ is an enrichment graph and $M\in\mathbb{O}\times\mathcal{D}\times\mathbf{V}$ is called a \emph{configuration mapping}.
+For each entry $(\mathbb{o}, P, v)\in M$ the following relationship holds: $\mathbb{c}(\mathbb{o}, P) \equiv \Phi(v)$.
+
+Informally, enrichment specifications correspond to the configuration files that are used to define an enrichment graph in the implementation of \ac{DEER2}.
+We will go into more detail on this subject in the subsequent section on implementation details.
+
+\section{Implementation Details}
+\label{sec:impl}
+
+We implement \ac{DEER2}\footnote{\url{https://github.com/dice-group/deer}} as a Java application using the \ac{JDK} version 9.
+\ac{DEER2} is based on a general engine for parallel data transformation workflows with the name \texttt{FARADAY-CAGE}, which we did also develop\footnote{\url{https://github.com/dice-group/faraday-cage}}.
+This engine enables \ac{DEER2} to automatically distribute the execution of a given enrichment graph to the available CPU cores.
+
+The \ac{RDF} features in \texttt{FARADAY-CAGE} and \ac{DEER2} are implemented using the Apache Jena Library\footnote{\url{https://jena.apache.org}}.
+
+For the configuration of enrichment workflows in \ac{DEER2}, we use \ac{RDF} files in the Turtle serialization format\footnote{\url{https://www.w3.org/TR/turtle/}}.
+To this end, we developed two RDF vocabularies, namely the \texttt{fcage}\footnote{\url{https://w3id.org/fcage}} and the \texttt{deer}\footnote{\url{https://w3id.org/deer}} vocabulary which can be used to specify enrichment graphs in \ac{RDF}.
+
+In order to be applicable to a wide domain of enrichment workflows, \ac{DEER2} implements eleven standard enrichment operators.
+We implement a command line interface as well as a RESTful Web service as end-user friendly frontends to our application.\\
+
+Since this thesis does not serve the purpose of a technical documentation, we will ommit a detailed discussion of most of these parts here.
+Rather, we will focus on the mechanisms used to ensure the modularity of \ac{DEER2}, since this was one of our leading design goals.
+Moreover, we will give a short overview of seven enrichment operators, since a basic understanding of their functionality is necessary to follow the development of our enrichment specification learning approach in \autoref{sec:gpapproach}.
+
+\subsection{Modularity}
 \label{ssec:modularity}
 
-\subsection{Overview of Implemented Enrichment Operators}
-\label{ssec:enrichmentgraph}
+In order to allow other developers to supply custom enrichment operators to \ac{DEER2}, we chose to use the \ac{PF4J} as a foundation of our plugin system.
+\ac{PF4J} allows to annotate certain interfaces as so called extension points and supplies an automatic discovery system for classes implementing these interfaces using the Java reflection language feature.
 
-\section{A Genetic Programming Approach to Enrichment Graph Learning}
+Therefore, we do not make any assumptions about the enrichment operators that are available at runtime.
+We supply mechanisms for developers to retrieve a list of the currently loaded enrichment operators at runtime using a command line interface and a RESTful Web service.\\
+
+Since each of the plugins can have their own configuration vocabulary, we implemented an approach to configuration validation using \ac{SHACL}.
+The same \ac{SHACL} shape graphs which we use for configuration validation could also be used in order to let frontends dynamically generate forms for convenient user interaction in the future.\\
+
+Finally, we supply a dummy Apache Maven\footnote{\url{https://maven.apache.org}} project\footnote{\url{https://github.com/dice-group/deer/tree/master/examples/simple-plugin-example}} that includes the necessary architecture and configurations for compiling custom code to enrichment operator plugins.
+
+\subsection{Overview of Implemented Enrichment Operators}
+\label{ssec:ops}
+In this section we will give a short descriptions of the functionality of each of the standard enrichment operators implemented in \ac{DEER2} that will be used in our learning approach.
+
+Please note that all of these operators are based on the ones as defined in the original \ac{DEER} publication\cite{sherif:2015a} and share the same general functionality, despite being completely reimplemented.
+
+Unless otherwise mentioned, their in-degree and out-degree amount to 1 and we denote their input and output \ac{RDF} Datasets $D^{(\text{in})}$ and $D^{(\text{out})}$, respectively.
+
+\subsubsection*{Filter Operator}
+
+The idea of the filter operator is to select a specific set of the input dataset triples.
+Then, the selected set of triples are generated by the filter operator as its output.
+
+The \texttt{deer:selector} parameter accepts a resource with at least one of the three basic selectors types: \texttt{deer:subject}, \texttt{deer:predicate} and \texttt{deer:object}, which can be combined as required.
+For simple filtering tasks, e.g. if the task is to filter out everything but triples containing a few given properties, this is easier to set up than to write a \ac{SPARQL} query.
+
+%Formally, given a 3-tuple $(\mathcal{s}, \mathcal{p}, \mathcal{o})$, 
+
+\subsubsection*{Authority Conformation Operator}
+
+The idea of the authority conformation operator is to change a specified source \ac{IRI} authority to a specified target \ac{IRI} authority.
+By the authority of an \ac{IRI} we mean the part of the \ac{IRI} before the last slash or hash sign, which is also sometimes called the namespace.\\
+
+One authority conformation operation is represented by the \texttt{deer:operation} property. The objects of \texttt{deer:operation} need to be blank nodes with the properties \texttt{deer:sourceAuthority} and \texttt{deer:targetAuthority} for specifying the source and target authorities, respectively.
+
+Any number of authority conformation operations can be specified by declaring multiple \texttt{deer:operation} parameters. \\
+
+Formally, given two \acp{IRI} called source authority ($a_s$) and a target authority ($a_t$), this operator will first set $D^{(\text{out})}\coloneq D^{(\text{in})}$.
+It will then find all triples $(s,p,o)\in D^{(\text{in})}, s\in \mathcal{R}$ for which $a_s$ is a prefix of the \ac{IRI} representing $s$.
+For each triple $t=(s,p,o)$ found that way, the operator will create a new triple $t'=(s',p,o)$ where $s'$ is obtained by replacing $a_s$ with $a_t$ in $s$.
+It will then perform the set operation $D^{(\text{out})}\coloneq (D^{(\text{out})}\backslash\{t\})\cup\{t'\}$ on the output dataset.
+
+\subsubsection*{Predicate Conformation Operator}
+
+The idea of the predicate conformation operator is to replace all instances of specified source predicate to a specified target predicate with the same subject and object values.
+
+One predicate conformation operation is represented by the \texttt{deer:operation} property.
+The objects of \texttt{deer:operation} must be blank nodes with the properties \texttt{deer:sourcePredicate} and \texttt{deer:targetPredicate} for specifying the source and target predicates, respectively.
+
+Any number of predicate conformation operations can be specified by declaring multiple \texttt{deer:operation parameters}. \\
+
+Formally, given two \ac{IRI} resources called source predicate ($p_s$) and a target predicate ($p_t$), this operator will first set $D^{(\text{out})}\coloneq D^{(\text{in})}$.
+It will then find all triples $(s,p,o)\in D^{(\text{in})}, s\in \mathcal{R}$ for which $p_s=p$.
+For each triple $t=(s,p_s,o)$ found that way, the operator will create a new triple $t'=(s,p_t,o)$  and perform the set operation $D^{(\text{out})}\coloneq (D^{(\text{out})}\backslash\{t\})\cup\{t'\}$ on the output dataset.
+
+\subsubsection*{Dereferencing Operator}
+
+For datasets which contain \ac{IRI} resources from remote \ac{RDF} Datasets, the idea of the dereferencing enrichment operator is to deference a set of triples that contain a desired predicate from the remote dataset and add them to the output dataset using content negotiation on \ac{HTTP}.
+
+One dereferencing operation is represented by the \texttt{deer:operation} parameter, which takes as object a blank node with the following properties:
+
+\begin{itemize}
+  \item \texttt{deer:lookUpPrefix} specifies the \ac{IRI} prefix to identify the resources from the desired remote \ac{RDF} Dataset.
+  \item \texttt{deer:dereferencingProperty} specifies the predicate used to identify the desired triples from the remote \ac{RDF} Dataset.
+  \item \texttt{deer:importProperty} specifies the predicate used when importing the identified triples to the output dataset.
+\end{itemize}
+
+One can specify any number of \texttt{deer:operation} parameters and they will all be carried out and in case of overlapping lookup prefix, they will be carried out in a single \ac{HTTP} request to save bandwidth.
+
+\subsubsection*{Named Entity Recognition Operator}
+
+The idea of the \ac{NER} operator is to extract \ac{IRI} resources from string literals using \ac{FOX}\cite{speck:2014a}, which is a \ac{NER} framework for the Semantic Web.
+To that end, it uses a lookup predicate $p_l$ to identify triples $(s,p_l,o), o\in \mathcal{L}$ containing interesting string literals in the input dataset.
+For each such triple, it extracts the textual data from the string literal $o$ and sends it to an instance of the \ac{FOX} Web service.
+The \ac{IRI} resources referencing named entities in the string literal are returned by \ac{FOX} and added to the output dataset using a configurable import predicate $p_i$
+
+This operator specifies the following configuration properties:
+
+\begin{itemize}
+  \item \texttt{deer:literalProperty} specifies the lookup predicate.
+  \item \texttt{deer:importProperty} specifies the import predicate.
+  \item \texttt{deer:foxUrl} specifies the \ac{URL} of the \ac{FOX} Web service.
+\end{itemize}
+
+\subsubsection*{Merge Operator}
+
+The merge operator has an in-degree of 2 and an out-degree of 1.
+The very simple idea of it is to merge two \ac{RDF} Datasets.
+Formally, for given input datasets $D_1^{(\text{in})}$, $D_2^{(\text{in})}$, this operator returns $D^{(\text{out})}\coloneq D_1^{(\text{in})}\cup D_2^{(\text{in})}$.
+
+\subsubsection*{Linking Operator}
+
+The linking operator has an in-degree of 2 and an out-degree of 1.
+Its idea is to perform Link Discovery on two input \ac{RDF} Datasets using the \ac{LIMES}\cite{ngomo:2011a}.
+Note that the \ac{LIMES} Java library is integrated into \ac{DEER2}.
+
+One can specify the following configuration properties for this operator:
+
+\begin{itemize}
+  \item \texttt{deer:linkSpecification} specifies the link specification to be passed to \ac{LIMES}.
+  \item \texttt{deer:threshold} specifies the linking threshold to be passed to \ac{LIMES}.
+  \item \texttt{deer:linkingPredicate} specifies the predicate to be used for the generated links.
+\end{itemize}
+
+Given two input datasets $D_1^{(\text{in})}$, $D_2^{(\text{in})}$ and the \ac{RDF} Dataset of links generated by the invocation of \ac{LIMES} $D_L$, this operator returns $D^{(\text{out})}\coloneq D_1^{(\text{in})}\cup D_2^{(\text{in})}\cup D_L$
+\section{Learning Approach}
 \label{sec:gpapproach}
+
+In this section, we will develop a \ac{GP}-based approach to the learning of enrichment specifications.
 
 \subsection{The Learning Problem}
 \label{ssec:learningproblem}
