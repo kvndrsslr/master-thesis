@@ -1,0 +1,312 @@
+\documentclass[tikz,border=10pt]{standalone}
+\usepackage{pgfplots}
+\usepackage{amsfonts}
+\usetikzlibrary{shapes.geometric,calc,arrows,shapes.misc,positioning}
+\usetikzlibrary{graphs}
+\pgfplotsset{compat=newest, scale only axis}
+\providecommand{\datapath}{.}
+\usepackage{xcolor}
+
+\begin{document}
+  \begin{tikzpicture}[dashed,->,>=stealth',shorten >=1pt,auto,node distance=2cm,
+                    semithick]
+
+\begin{scope}
+  
+  \node[shape=rounded rectangle,fill=black!50!black,draw=none,text=white] (A)  {\texttt{dbr:Peter\_Koper}};
+  
+  \node[] at (-7,1) (B) {\texttt{"Quakenbrück"}};  
+  \node[] at (-7,-1.2) (D) {\texttt{"Peter Koper"@en}};  
+  \node[shape=rounded rectangle,fill=black!50,draw=none,text=white] at (-8,-2.4) (E) {\texttt{dbr:Johns\_Hopkins\_University}};
+  \node[] at (0.1,1.1) (X) {\large{$\left(D_{s_1}\right)$}};  
+  \node[shape=rounded rectangle,fill=black!50,draw=none,text=white] at (-9,0) (F) {\texttt{dbr:Island\_of\_the\_Dead\_(2000\_film)}};
+    \node[text width=6.2cm] at (-7,-3.5) (G) {\texttt{"Peter Koper (born 1947) is an ..."}};  
+  
+  
+  \node[] at (-7,2) (C) {\texttt{"1947-0-0"}};
+  
+  \path (A) edge [bend right=11] node [sloped, above] {\small{\texttt{dbo:birthPlace}}}  (B)
+        (A) edge [bend right=22] node [sloped, above] {\small{\texttt{dbo:birthDate}}}  (C)
+        (A) edge [bend left=11] node [sloped, above] {\small{\texttt{foaf:name}}}  (D)
+        (A) edge [bend left=16] node [sloped, above] {\small{\texttt{dbo:almaMater}}}  (E)
+        (A) edge node [sloped, above] {\small{\texttt{dbo:producerOf}}}  (F)
+        (A) edge [bend left=26] node [sloped, above] {\small{\texttt{rdfs:comment}}}  (G)
+  ;
+
+\end{scope}
+
+\begin{scope}[yshift={0.2mm}, xshift={4.5cm}]
+  
+  \node[shape=rounded rectangle,fill=black!50!black,draw=none,text=white] (A2)  {\texttt{ex:Quakenbrück}};
+  
+  \node[] at (7,1) (B2) {\texttt{"Quakenbrück"}};  
+  \node[] at (7,-1.2) (D2) {\texttt{"52.67722320556640625"}};  
+  \node[] at (7,-2.4) (E2) {\texttt{"7.9574999809265136719"}};
+  \node[] at (-0.1, 1.1) (X) {\large{$\left(D_{s_2}\right)$}};  
+  \node[shape=rounded rectangle,fill=black!50,draw=none,text=white] at (6.5,0) (F2) {\texttt{dbr:Germany}};
+    \node[shape=rounded rectangle,fill=black!50,draw=none,text=white] at (6,3) (G2) {\texttt{dbo:Town}};  
+  
+  
+  \node[] at (7,2) (C2) {\texttt{"49610"}};
+  
+  \path (A2) edge [bend left=11] node [sloped, above] {\small{\texttt{rdfs:label}}}  (B2)
+        (A2) edge [bend left=22] node [sloped, above] {\small{\texttt{dbo:postalCode}}}  (C2)
+        (A2) edge [bend right=11] node [sloped, above] {\small{\texttt{geo:lat}}}  (D2)
+        (A2) edge [bend right=16] node [sloped, above] {\small{\texttt{geo:long}}}  (E2)
+        (A2) edge node [sloped, above] {\small{\texttt{dbo:country}}}  (F2)
+        (A2) edge [bend left=33] node [sloped, above] {\small{\texttt{rdf:type}}}  (G2)
+  ;
+
+\end{scope}
+
+
+%\end{tikzpicture}
+%\begin{tikzpicture}[dashed,->,>=stealth',shorten >=1pt,auto,node distance=2cm,
+%                    semithick]
+
+
+\begin{scope}[yshift={-6.8cm}]
+  
+  \node[shape=rounded rectangle,fill=black!50!black,draw=none,text=white] (A3)  {\texttt{my:Peter\_Koper}};
+  
+  \node[shape=rounded rectangle,fill=black!50,draw=none,text=white] at (-4,1) (B3) {\texttt{dbr:Tim\_Southam}};  
+  \node[] at (-7,-1.2) (D3) {\texttt{"Peter Koper"@en}};
+  \node[shape=rounded rectangle,fill=black!50,draw=none,text=white] at (-9,-2.2) (H3) {\texttt{dbr:Paramount\_Pictures}};  
+  \node[shape=rounded rectangle,fill=black!50,draw=none,text=white] at (-9,-3.2) (I3) {\texttt{dbr:Baltimore}};    
+  \node[] at (1.7, 1.1) (X) {\large{$\left(D_{t}\right)$}}; 
+  \node[shape=rounded rectangle,fill=black!50,draw=none,text=white] at (-9,0) (F3) {\texttt{dbr:Island\_of\_the\_Dead\_(2000\_film)}};
+  
+
+  \node[shape=rounded rectangle,fill=black!50!black,draw=none,text=white] at (4,-2) (A4)  {\texttt{ex:Quakenbrück}};
+  
+  \node[] at (11, 0) (B4) {\texttt{"Quakenbrück"}};  
+  \node[] at (11,-3.2) (D4) {\texttt{"52.67722320556640625"}};  
+  \node[] at (11,-4.4) (E4) {\texttt{"7.9574999809265136719"}};
+  \node[shape=rounded rectangle,fill=black!50,draw=none,text=white] at (11, -1) (F4) {\texttt{dbr:Germany}};
+    \node[shape=rounded rectangle,fill=black!50,draw=none,text=white] at (10.7, -2) (G4) {\texttt{dbo:Town}};  
+  
+  
+    \path (F3.north) edge [bend left=22] node [sloped, above] {\small{\texttt{dbo:director}}}  (B3.west)
+        (A3) edge [bend left=11] node [sloped, below] {\small{\texttt{my:name}}}  (D3)
+        (A3) edge [bend left=22] node [sloped, below] {\small{\texttt{my:relatedTo}}}  (H3.east)
+        (A3) edge [bend left=33] node [sloped, below] {\small{\texttt{my:relatedTo}}}  (I3.east)
+        (A3) edge node [sloped, above] {\small{\texttt{dbo:producerOf}}}  (F3)
+        (A3.east) edge [bend left=30] node [sloped, above] {\small{\texttt{my:birthPlace}}}  (A4.north)
+  ;
+  
+  \path (A4) edge [bend left=16] node [sloped, above] {\small{\texttt{rdfs:label}}}  (B4)
+        (A4) edge [bend right=11] node [sloped, below] {\small{\texttt{geo:lat}}}  (D4)
+        (A4) edge [bend right=16] node [sloped, below] {\small{\texttt{geo:long}}}  (E4)
+        (A4) edge [bend left=11] node [sloped, below] {\small{\texttt{dbo:country}}}  (F4)
+        (A4) edge node [sloped, below] {\small{\texttt{rdf:type}}}  (G4)
+  ;
+
+\end{scope}
+%
+%\begin{scope}[yshift={-24.2cm}]
+%    \node[shape=circle,fill=black!20!white,draw=none,text=black] at (-7,1) (X)  {$\bot_1$};
+%    \node[shape=circle,fill=black!20!white,draw=none,text=black] at (-7,0) (Y)  {$\bot_2$};
+%    \node[shape=circle,fill=black!50!white,draw=none,text=white] at (-5, 1) (A) {\texttt{N}};
+%    \node[shape=circle,fill=black!50!white,draw=none,text=white] (B)  [right of=A] {\texttt{A}};
+%    \node[shape=circle,fill=black!50!white,draw=none,text=white] (C)  [right of=B] {\texttt{D}};
+%    \node[shape=circle,fill=black!50!white,draw=none,text=white] (D)  [right of=C] {\texttt{L}};
+%    \node[shape=circle,fill=black!50!white,draw=none,text=white] (E)  [right of=D] {\texttt{P}};
+%    \node[shape=circle,fill=black!50!white,draw=none,text=white] (F)  [right of=E] {\texttt{F}};
+%    \node[shape=circle,fill=black,draw=none,text=white] (Z)  [right of=F] {$\top$};
+%    \node[] at (0,-2) (X4) {\large\textbf{(4)}};  
+%        
+%  \path (X) edge node  {(1,1)} (A)
+%        (A) edge node  {(1,1)} (B)
+%        (B) edge node  {(1,1)} (C)
+%        (C) edge node  {(1,1)} (D)
+%        (D) edge node  {(1,1)} (E)
+%        (E) edge node  {(1,1)} (F)
+%        (F) edge node  {(1,1)} (Z)
+%        (Y) edge [bend right=11] node  {(1,2)} (D) 
+%  ;
+%
+%\end{scope}
+
+%\begin{scope}[yshift={-24.2cm}]
+%    \node[shape=circle,fill=black!50!green,draw=none,text=white] at (-7,1) (X)  {$\bot_1$};
+%    \node[shape=circle,fill=black!50!green,draw=none,text=white] at (-7,0) (Y)  {$\bot_2$};
+%    \node[shape=circle,fill=orange,draw=none,text=white] at (-5, 1) (A) {\texttt{N}};
+%    \node[shape=circle,fill=orange,draw=none,text=white] (B)  [right of=A] {\texttt{A}};
+%    \node[shape=circle,fill=orange,draw=none,text=white] (C)  [right of=B] {\texttt{D}};
+%    \node[shape=circle,fill=orange,draw=none,text=white] (D)  [right of=C] {\texttt{L}};
+%    \node[shape=circle,fill=orange,draw=none,text=white] (E)  [right of=D] {\texttt{P}};
+%    \node[shape=circle,fill=orange,draw=none,text=white] (F)  [right of=E] {\texttt{F}};
+%    \node[shape=circle,fill=red,draw=none,text=white] (Z)  [right of=F] {$\top$};
+%    \node[] at (0,-2) (X4) {\large\textbf{(4)}};  
+%        
+%  \path (X) edge node  {(1,1)} (A)
+%        (A) edge node  {(1,1)} (B)
+%        (B) edge node  {(1,1)} (C)
+%        (C) edge node  {(1,1)} (D)
+%        (D) edge node  {(1,1)} (E)
+%        (E) edge node  {(1,1)} (F)
+%        (F) edge node  {(1,1)} (Z)
+%        (Y) edge [bend right=11] node  {(1,2)} (D) 
+%  ;
+%
+%\end{scope}
+
+%<http://dbpedia.org/resource/Quakenbrück> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://dbpedia.org/ontology/Town> .
+%<http://dbpedia.org/resource/Quakenbrück> <http://dbpedia.org/ontology/postalCode> "49610" .
+\end{tikzpicture}
+
+
+\end{document}
+
+
+%
+%\begin{document}
+%  \begin{tikzpicture}[dashed,->,>=stealth',shorten >=1pt,auto,node distance=2cm,
+%                    semithick]
+%
+%\begin{scope}
+%  
+%  \node[shape=rounded rectangle,fill=black!50!black,draw=none,text=white] (A)  {\texttt{dbr:Peter\_Koper}};
+%  
+%  \node[] at (-7,1) (B) {\texttt{"Quakenbrück"}};  
+%  \node[] at (-7,-1.2) (D) {\texttt{"Peter Koper"@en}};  
+%  \node[shape=rounded rectangle,fill=black!50,draw=none,text=white] at (-8,-2.4) (E) {\texttt{dbr:Johns\_Hopkins\_University}};
+%  \node[] at (0,-4.5) (X) {\large\textbf{(1)}};  
+%  \node[shape=rounded rectangle,fill=black!50,draw=none,text=white] at (-9,0) (F) {\texttt{dbr:Island\_of\_the\_Dead\_(2000\_film)}};
+%    \node[text width=8cm] at (8.5,0) (G) {\texttt{"Peter Koper (born 1947) is an American journalist, professor, screenwriter, and producer. He numbers among the original Dreamlanders, the group of actors and artists who worked with independent film maker John Waters on his early films. He has written for the Associated Press, the Baltimore Sun, American Film, Rolling Stone, and People. He worked as a staff writer and producer for America's Most Wanted, and has written television for the Discovery Channel, the Learning Channel, Paramount Television and Lorimar Television. Koper wrote and co-produced the cult movie Headless Body in Topless Bar, and wrote the screenplay for Island of the Dead. He has taught at the University of the District of Columbia, and Hofstra University."}};  
+%  
+%  
+%  \node[] at (-7,2) (C) {\texttt{"1947-0-0"}};
+%  
+%  \path (A) edge [bend right=11] node [sloped, above] {\small{\texttt{dbo:birthPlace}}}  (B)
+%        (A) edge [bend right=22] node [sloped, above] {\small{\texttt{dbo:birthDate}}}  (C)
+%        (A) edge [bend left=11] node [sloped, above] {\small{\texttt{foaf:name}}}  (D)
+%        (A) edge [bend left=16] node [sloped, above] {\small{\texttt{dbo:almaMater}}}  (E)
+%        (A) edge node [sloped, above] {\small{\texttt{dbo:producerOf}}}  (F)
+%        (A) edge node [sloped, above] {\small{\texttt{rdfs:comment}}}  (G)
+%  ;
+%
+%\end{scope}
+%
+%\begin{scope}[yshift={-8cm}]
+%  
+%  \node[shape=rounded rectangle,fill=black!50!black,draw=none,text=white] (A2)  {\texttt{ex:Quakenbrück}};
+%  
+%  \node[] at (-7,1) (B2) {\texttt{"Quakenbrück"}};  
+%  \node[] at (7,-1.2) (D2) {\texttt{"52.67722320556640625"}};  
+%  \node[] at (8,-2.4) (E2) {\texttt{"7.9574999809265136719"}};
+%  \node[] at (0,-4) (X) {\large\textbf{(2)}};  
+%  \node[shape=rounded rectangle,fill=black!50,draw=none,text=white] at (-9,0) (F2) {\texttt{dbr:Germany}};
+%    \node[shape=rounded rectangle,fill=black!50,draw=none,text=white] at (5,0) (G2) {\texttt{dbo:Town}};  
+%  
+%  
+%  \node[] at (-7,2) (C2) {\texttt{"49610"}};
+%  
+%  \path (A2) edge [bend right=11] node [sloped, above] {\small{\texttt{rdfs:label}}}  (B2)
+%        (A2) edge [bend right=22] node [sloped, above] {\small{\texttt{dbo:postalCode}}}  (C2)
+%        (A2) edge [bend right=11] node [sloped, above] {\small{\texttt{geo:lat}}}  (D2)
+%        (A2) edge [bend right=16] node [sloped, above] {\small{\texttt{geo:long}}}  (E2)
+%        (A2) edge node [sloped, above] {\small{\texttt{dbo:country}}}  (F2)
+%        (A2) edge node [sloped, above] {\small{\texttt{rdf:type}}}  (G2)
+%  ;
+%
+%\end{scope}
+%
+%
+%%\end{tikzpicture}
+%%\begin{tikzpicture}[dashed,->,>=stealth',shorten >=1pt,auto,node distance=2cm,
+%%                    semithick]
+%
+%
+%\begin{scope}[yshift={-14.8cm}]
+%  
+%  \node[shape=rounded rectangle,fill=black!50!black,draw=none,text=white] (A3)  {\texttt{my:Peter\_Koper}};
+%  
+%  \node[shape=rounded rectangle,fill=black!50,draw=none,text=white] at (-4,1) (B3) {\texttt{dbr:Tim\_Southam}};  
+%  \node[] at (-7,-1.2) (D3) {\texttt{"Peter Koper"@en}};
+%  \node[shape=rounded rectangle,fill=black!50,draw=none,text=white] at (-9,-2.2) (H3) {\texttt{dbr:Paramount\_Pictures}};  
+%  \node[shape=rounded rectangle,fill=black!50,draw=none,text=white] at (-9,-3.2) (I3) {\texttt{dbr:Baltimore}};    
+%  \node[] at (0,-6) (X3) {\large\textbf{(3)}};  
+%  \node[shape=rounded rectangle,fill=black!50,draw=none,text=white] at (-9,0) (F3) {\texttt{dbr:Island\_of\_the\_Dead\_(2000\_film)}};
+%  
+%
+%  \node[shape=rounded rectangle,fill=black!50!black,draw=none,text=white] at (4,-2) (A4)  {\texttt{ex:Quakenbrück}};
+%  
+%  \node[] at (11, 0) (B4) {\texttt{"Quakenbrück"}};  
+%  \node[] at (11,-3.2) (D4) {\texttt{"52.67722320556640625"}};  
+%  \node[] at (11,-4.4) (E4) {\texttt{"7.9574999809265136719"}};
+%  \node[shape=rounded rectangle,fill=black!50,draw=none,text=white] at (11, -1) (F4) {\texttt{dbr:Germany}};
+%    \node[shape=rounded rectangle,fill=black!50,draw=none,text=white] at (10.7, -2) (G4) {\texttt{dbo:Town}};  
+%  
+%  
+%    \path (F3.north) edge [bend left=22] node [sloped, above] {\small{\texttt{dbo:director}}}  (B3.west)
+%        (A3) edge [bend left=11] node [sloped, below] {\small{\texttt{my:name}}}  (D3)
+%        (A3) edge [bend left=22] node [sloped, below] {\small{\texttt{my:relatedTo}}}  (H3.east)
+%        (A3) edge [bend left=33] node [sloped, below] {\small{\texttt{my:relatedTo}}}  (I3.east)
+%        (A3) edge node [sloped, above] {\small{\texttt{dbo:producerOf}}}  (F3)
+%        (A3.east) edge [bend left=30] node [sloped, above] {\small{\texttt{my:birthPlace}}}  (A4.north)
+%  ;
+%  
+%  \path (A4) edge [bend left=16] node [sloped, above] {\small{\texttt{rdfs:label}}}  (B4)
+%        (A4) edge [bend right=11] node [sloped, below] {\small{\texttt{geo:lat}}}  (D4)
+%        (A4) edge [bend right=16] node [sloped, below] {\small{\texttt{geo:long}}}  (E4)
+%        (A4) edge [bend left=11] node [sloped, below] {\small{\texttt{dbo:country}}}  (F4)
+%        (A4) edge node [sloped, below] {\small{\texttt{rdf:type}}}  (G4)
+%  ;
+%
+%\end{scope}
+%
+%\begin{scope}[yshift={-24.2cm}]
+%    \node[shape=circle,fill=black!20!white,draw=none,text=black] at (-7,1) (X)  {$\bot_1$};
+%    \node[shape=circle,fill=black!20!white,draw=none,text=black] at (-7,0) (Y)  {$\bot_2$};
+%    \node[shape=circle,fill=black!50!white,draw=none,text=white] at (-5, 1) (A) {\texttt{N}};
+%    \node[shape=circle,fill=black!50!white,draw=none,text=white] (B)  [right of=A] {\texttt{A}};
+%    \node[shape=circle,fill=black!50!white,draw=none,text=white] (C)  [right of=B] {\texttt{D}};
+%    \node[shape=circle,fill=black!50!white,draw=none,text=white] (D)  [right of=C] {\texttt{L}};
+%    \node[shape=circle,fill=black!50!white,draw=none,text=white] (E)  [right of=D] {\texttt{P}};
+%    \node[shape=circle,fill=black!50!white,draw=none,text=white] (F)  [right of=E] {\texttt{F}};
+%    \node[shape=circle,fill=black,draw=none,text=white] (Z)  [right of=F] {$\top$};
+%    \node[] at (0,-2) (X4) {\large\textbf{(4)}};  
+%        
+%  \path (X) edge node  {(1,1)} (A)
+%        (A) edge node  {(1,1)} (B)
+%        (B) edge node  {(1,1)} (C)
+%        (C) edge node  {(1,1)} (D)
+%        (D) edge node  {(1,1)} (E)
+%        (E) edge node  {(1,1)} (F)
+%        (F) edge node  {(1,1)} (Z)
+%        (Y) edge [bend right=11] node  {(1,2)} (D) 
+%  ;
+%
+%\end{scope}
+%
+%%\begin{scope}[yshift={-24.2cm}]
+%%    \node[shape=circle,fill=black!50!green,draw=none,text=white] at (-7,1) (X)  {$\bot_1$};
+%%    \node[shape=circle,fill=black!50!green,draw=none,text=white] at (-7,0) (Y)  {$\bot_2$};
+%%    \node[shape=circle,fill=orange,draw=none,text=white] at (-5, 1) (A) {\texttt{N}};
+%%    \node[shape=circle,fill=orange,draw=none,text=white] (B)  [right of=A] {\texttt{A}};
+%%    \node[shape=circle,fill=orange,draw=none,text=white] (C)  [right of=B] {\texttt{D}};
+%%    \node[shape=circle,fill=orange,draw=none,text=white] (D)  [right of=C] {\texttt{L}};
+%%    \node[shape=circle,fill=orange,draw=none,text=white] (E)  [right of=D] {\texttt{P}};
+%%    \node[shape=circle,fill=orange,draw=none,text=white] (F)  [right of=E] {\texttt{F}};
+%%    \node[shape=circle,fill=red,draw=none,text=white] (Z)  [right of=F] {$\top$};
+%%    \node[] at (0,-2) (X4) {\large\textbf{(4)}};  
+%%        
+%%  \path (X) edge node  {(1,1)} (A)
+%%        (A) edge node  {(1,1)} (B)
+%%        (B) edge node  {(1,1)} (C)
+%%        (C) edge node  {(1,1)} (D)
+%%        (D) edge node  {(1,1)} (E)
+%%        (E) edge node  {(1,1)} (F)
+%%        (F) edge node  {(1,1)} (Z)
+%%        (Y) edge [bend right=11] node  {(1,2)} (D) 
+%%  ;
+%%
+%%\end{scope}
+%
+%%<http://dbpedia.org/resource/Quakenbrück> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://dbpedia.org/ontology/Town> .
+%%<http://dbpedia.org/resource/Quakenbrück> <http://dbpedia.org/ontology/postalCode> "49610" .
+%\end{tikzpicture}
+%
+%
+%\end{document}

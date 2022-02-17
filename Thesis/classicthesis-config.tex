@@ -131,6 +131,9 @@
 % ****************************************************************************************************
 % 5. Setup code listings
 % ****************************************************************************************************
+\usepackage{float}
+\newfloat{myfloat}{t}{lop}
+
 \usepackage{listings}
 \lstset{language=[LaTeX]Tex,%C++,
   morekeywords={PassOptionsToPackage,selectlanguage},
@@ -314,3 +317,4 @@
 }
 \counterwithout{footnote}{chapter}
 \DeclareMathOperator*{\argmax}{arg\,max} % thin space, limits underneath in displays
+\DeclareMathOperator*{\rnd}{rnd}

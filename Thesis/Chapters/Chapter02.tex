@@ -21,7 +21,7 @@ The childs are then inserted into the next generations population together with 
 A mutation operator is then applied to each individual in the next generation with a certain \emph{mutation probability} ($\sigma$).
 The classic mutation operator mutates each selected individual by changing the bit value of a given bit in its bit vector representation with a probability denoted by the \emph{mutation rate} ($\rho$), i.e. a mutation rate of $\rho=\frac{1}{2}$ means that on average, half of the bits are changed to their opposing state.
 
-These steps of selection, crossover and mutation are repeated until a certain termination criteria holds, which could include a maximum number of generations, a target fitness value or a test of population convergence.
+These steps of selection, crossover and mutation are repeated until a certain termination criterion holds, which could include a maximum number of generations, a target fitness value or a test of population convergence.
 
 Note that in the sense as defined above, \aclp{GA} were reportedly\cite{mitchell:1998a} first conceived by John Holland in 1960 as an extension of general $(\mu +\lambda)$ Evolutionary Algorithms, the novelty being the introduction of crossover and selection operators whereas previous iterations of Evolutionary Algorithms only made use of mutation operators.
 
@@ -117,32 +117,32 @@ An \ac{RDF} graph is a collection of \emph{statements}, also called \emph{triple
 Each statement therefore consists of a subject, a predicate and an object.
 Every subject is either a \acs{IRI} resource or a blank node, all predicates are \acs{IRI} resources and objects can be either of the three basic types.
 
-In the following, we will give a formal specification of an \ac{RDF} Dataset on which we will rely in the remainder of this work.
+In the following, we will give a formal specification of an \ac{RDF} dataset on which we will rely in the remainder of this work.
 
 \newpage
 \acused{IRI}
 \paragraph{RDF Dataset:} Let $\mathcal{R}$ be the set of all \ac{RDF} \ac{IRI} resources, $\mathcal{B}$ be the set of all blank nodes and $\mathcal{L}$ be the set of all literals.
 
-We call a set $D\coloneq \{(s,p,o) \in (\mathcal{R}\cup\mathcal{B})\times\mathcal{R}\times(\mathcal{R}\cup\mathcal{B}\cup\mathcal{L})\} $ of triples an \textbf{\ac{RDF} Dataset}.\\
+We call a set $D\coloneq \{(s,p,o) \in (\mathcal{R}\cup\mathcal{B})\times\mathcal{R}\times(\mathcal{R}\cup\mathcal{B}\cup\mathcal{L})\} $ of triples an \textbf{\ac{RDF} dataset}.\\
 
-Note that for sake of simplicity, we will not distinguish between an \ac{RDF} Dataset and its abstract graph and therefore we from now on resort to referring to both as \ac{RDF} Datasets.\\
+Note that for sake of simplicity, we will not distinguish between an \ac{RDF} dataset and its abstract graph and therefore we from now on resort to referring to both as \ac{RDF} datasets.\\
 
 \subsection{Vocabularies, Ontologies and Shapes}
 \label{ssec:onto}
 While \ac{RDF} specifies a basic set of vocabulary, it is not very expressive on its own and offers no mechanism to define vocabularies or data schemes.
 
-In order to make statements about the nature of the data that is expressed, or to speak in terms of \acp{DL}, to define a TBox in \ac{RDF} documents, other standards which extend on the \ac{RDF} semantics have to be used.
+In order to make statements about the nature of the data that is expressed, other standards which extend on the \ac{RDF} semantics have to be used.
 
 This is a concious decision as it allows to use multiple semantics, \ie~\acp{DL} of different expressiveness to be used in conjunction with the \ac{RDF} data model.
 
 The two main standards that are used to that end are \ac{RDFS} and \ac{OWL}.\\
 
 Contrary to the typical notion of ,,schema'', as for example in \ac{XSD}, \ac{RDFS} is not used to define a closed schema in order to force adherence to it.
-Rather, it provides a set of standard predicates and resources that enable composing a simple TBox with mostly statements about class and predicate hierarchies, instances of classes and relationships between classes and predicates.
+Rather, it provides a set of standard predicates and resources that enable composing a simple ontology with mostly statements about class and predicate hierarchies, instances of classes and relationships between classes and predicates.
 It thereby enables the use of efficient reasoners for basic inference as well as more standardized tools for applications to discover and reason about what the data is about and how it is potentially shaped.
 The ,,potentially'' in the last sentence is owed to the fact that \ac{RDF} as well as \ac{RDFS} semantics follow the \emph{open-world assumption}, \ie~the absence of a fact is not enough to prove its negation holds true.\\
 
-The \acl{OWL} is a standard which allows for much more expressive TBoxes compared to \ac{RDFS}.
+The \acl{OWL} is a standard which allows for much more expressiveness compared to \ac{RDFS}.
 There are three subsets of \ac{OWL}: \ac{OWL} Lite $\subset$ \ac{OWL} DL $\subset$ \ac{OWL} Lite.
 Their expressiveness increases from \ac{OWL} Lite to \ac{OWL} Full, which naturally comes at the cost of availability of efficient or even effective reasoning algorithms.\\
 
@@ -152,7 +152,7 @@ Contrary to the previously introduced standards, \ac{SHACL} semantics follow the
 \section{Linked Data Integration}
 \label{sec:ldi}
 
-Generally speaking, Linked Data Integration denotes a process of processing data whose goal it is to return one or many \ac{RDF} Dataset(s) for a specific use case, \eg~publication to the \ac{LOD} Cloud or preparation for further usage by specific applications.
+Generally speaking, Linked Data Integration denotes a process of processing data whose goal it is to return one or many \ac{RDF} dataset(s) for a specific use case, \eg~publication to the \ac{LOD} Cloud or preparation for further usage by specific applications.
 
 The input to Linked Data Integration can, but not necessarily must be Linked Data itself.
 Typical processing steps in Linked Data Integration include, but are not limited to (1) lifting, (2) linking, (3) fusion, (4) enrichment.
@@ -162,7 +162,7 @@ In the following, we will define each of these processing steps and give a narro
 
 \subsection{Lifting}
 \label{ssec:lifting}
-In the Linked Data community, lifting denotes the act of materializing \ac{RDF} Datasets from sources of non-linked data.
+In the Linked Data community, lifting denotes the act of materializing \ac{RDF} datasets from sources of non-linked data.
 These sources may be relational databases, proprietary file formats, measurements from sensor networks and any other structured or unstructured data that is not Linked Data.
 
 The term is closely related to \ac{RDF} mapping, whereas in mapping the focus is often on ad-hoc transformation of an evolving non-linked data source in contrast to the materializing approach in lifting
@@ -177,7 +177,7 @@ The approach in \cite{hasan:2011a} considers a framework for continuously liftin
 \subsection{Linking}
 \label{ssec:linking}
 
-The linking of \ac{RDF} Datasets, sometimes also called instance matching, amounts to finding a mapping $M$ between two \ac{RDF} Datasets, commonly called the source dataset $S$ and the target dataset $T$, such that the pairs $(s,t)\in M$ identified by the mapping abide to a given relation $r$.
+The linking of \ac{RDF} datasets, sometimes also called instance matching, amounts to finding a mapping $M$ between two \ac{RDF} datasets, commonly called the source dataset $S$ and the target dataset $T$, such that the pairs $(s,t)\in M$ identified by the mapping abide to a given relation $r$.
 
 This field is closely related to the instance matching and deduplication in databases.
 The main challenge here is that due to the very large number of instances in the Web of Data, the quadratic run time complexity of a brute force search can not be accepted.
@@ -196,26 +196,26 @@ In \cite{NGLY13}, the authors use an altered grid search for unsupervised learni
 \subsection{Fusion}
 \label{ssec:fusion}
 
-The fusion of \ac{RDF} Datasets is a task in which two interlinked datasets that contain information about the same set of instances are merged to produce a joint dataset.
+The fusion of \ac{RDF} datasets is a task in which two interlinked datasets that contain information about the same set of instances are merged to produce a joint dataset.
 To this end, an ontology mapping has to be generated in a first step.
 Subsequently, the fusion is carried out following a set of so called fusion rules that are either predefined by the system, the user or dynamically learned.
 
-In \cite{nikolov:2007a,nikolov:2008a,nikolov:2008b}, the authors use a fusion architecture called \emph{KnoFuss} which handles the end-to-end fusion of \ac{RDF} Datasets.
-The apporach in \cite{mendes:2012a} combines quality assessment and fusion of \ac{RDF} Datasets.
+In \cite{nikolov:2007a,nikolov:2008a,nikolov:2008b}, the authors use a fusion architecture called \emph{KnoFuss} which handles the end-to-end fusion of \ac{RDF} datasets.
+The apporach in \cite{mendes:2012a} combines quality assessment and fusion of \ac{RDF} datasets.
 A probabilistic framework is applied to the fusion problem in\cite{dong:2014a} and \cite{bryl:2014a} is an approach to automatic learning of fusion rules in the setting of cross-language fusion from the Wikipedia corpus.
 
 \subsection{Enrichment}
 \label{ssec:enrichment}
 
 Enrichment is the least well-defined step in the Linked Data Integration lifecycle.
-Informally, enrichment corresponds to applying a set of modifications to a given \ac{RDF} Dataset such that it abides by certain use case-specific predefined criterias.
+Informally, enrichment corresponds to applying a set of modifications to a given \ac{RDF} dataset such that it abides by certain use case-specific predefined criteria.
 We will call this set of modifications, \ie~addition and deletion of triples from the source dataset, an enrichment workflow in the remainder of this text.
 Examples of such modifications include the dereferencing of information from other datasets, the application of quality assurance methods to the dataset, the conformation of the used vocabulary or the filtering of its contents.
 
-In practice this means, that \ac{RDF} Dataset Enrichment is a problem that greatly differs from use case to use case. 
+In practice this means, that \ac{RDF} dataset enrichment is a problem that greatly differs from use case to use case. 
 Notable applications of enrichment in the literature include \cite{abel:2011a}, which considers the automatic extraction of interests from Twitter posts in order to enrich user profiles on the Social Web and \cite{choudhury:2009a}, which applies a ranking method to the Youtube tag space in order to enrich datasets on the \ac{LOD} Cloud with links to Youtube videos.
 
-However, to our best knowledge, the only effort directed towards a general framework of \ac{RDF} Dataset Enrichment together with an automatic learning approach can be found in \cite{sherif:2015a}, where the authors propose a framework and learning algorithm called \ac{DEER}.
+However, to our best knowledge, the only effort directed towards a general framework of \ac{RDF} dataset enrichment together with an automatic learning approach can be found in \cite{sherif:2015a}, where the authors propose a framework and learning algorithm called \ac{DEER}.
 We will thus have a deeper analysis of \ac{DEER} in the following section, where we will try to identify potential shortcomings of the framework in order to underline the necessity for our contribution in this work, \ac{DEER2}.
 
 \subsection{DEER}
@@ -223,8 +223,8 @@ We will thus have a deeper analysis of \ac{DEER} in the following section, where
 As we chose to build our approach based on the existing Open Source software \ac{DEER}, we are going to highlight specific areas in the original paper resp.\, software, where we see chances of substantial improvement.
 
 \subsubsection*{On Restrictiveness of Sequential Chaining}
-The \acl{DEER} models \ac{RDF} Dataset Enrichment workflows as ordered sequences of enrichment functions.
-These enrichment functions take as input exactly one \ac{RDF} Dataset and return an altered version of it by virtue of addition and deletion of triples.
+The \acl{DEER} models \ac{RDF} dataset enrichment workflows as ordered sequences of enrichment functions.
+These enrichment functions take as input exactly one \ac{RDF} dataset and return an altered version of it by virtue of addition and deletion of triples.
 It is argued that formally, any modification on a given dataset can be represented as a set of additions and deletions.
 
 While this is certainly true, the application of two independent enrichment functions, that formally have no knowledge of each other, could be problematic as one function might delete triples which the other relies on in order to successfully apply the desired enrichment.\\
@@ -235,12 +235,11 @@ In order to better distinguish our approach from the former, we will call atomic
 \subsubsection*{On Modularity and Attractiveness of the System}
 The framework consists of five atomic enrichment functions that can be combined to form so called enrichment pipelines of arbitrary size.
 The language used implies that these enrichment functions are only examples and potentially more could be implemented.
-However, no implicit facility for easy extension of the framework is given and exploration of the code base suggests that the ability to implement new operators is restricted in the sense that it would require recompilation of the whole application.\\
-
+ 
 In order to improve the real-world suitability of our contribution \ac{DEER2}, we therefore will aim to attract developer interest by providing plugin facilities with low barriers to entry.
 
 \subsubsection*{On Appropriateness of Fitness Function}
-The refinement operator-based learning approach in \ac{DEER} is defined as the task of finding an appropriate enrichment pipeline given an input \ac{RDF} Dataset $K$ and a target \ac{RDF} Dataset $K'$.
+The refinement operator-based learning approach in \ac{DEER} is defined as the task of finding an appropriate enrichment pipeline given an input \ac{RDF} dataset $K$ and a target \ac{RDF} dataset $K'$.
 
 As the enrichment functions typically require manual configuration, the problem is twofold: it is not only the correct sequence of enrichment functions that is subject to the learning process but also the correct configuration of the enrichment functions that are part of the pipeline.
 
@@ -250,7 +249,7 @@ That is, in order to decide which enrichment function should be next added to th
 It is then applied to the result of the previous enrichment function and its result evaluated using a fitness function over the provided training data.
 
 Note that one of the results of the evaluation of \ac{DEER} was that it is sufficient to provide only a single training example.
-While it seems unusual for a learning method to rely on a single training example, it is a valid assertment in this specific case, as enrichment can be assumed to deal with more or less regularly shaped \ac{RDF} Datasets.
+While it seems unusual for a learning method to rely on a single training example, it is a valid assertment in this specific case, as enrichment can be assumed to deal with more or less regularly shaped \ac{RDF} datasets.
 
 The dataset produced by the intermediate pipeline in each iteration is denoted as $K_i$ with $i$ being the position of the enrichment function producing $K_i$ in the pipline.
 
@@ -285,22 +284,23 @@ As a result of this analysis, we will use a non-deterministic approach based on 
 
 In this section we will introduce some additional definitions required to understand the remainder of this work which did not fit into one of the previous sections.
 
-\subsection{Concise Bounded Descriptions}
+\subsection{Simplified Concise Bounded Descriptions}
 
-Let $D$ be an \ac{RDF} Dataset and $r\in D$ be an \ac{IRI} resource in that dataset.
+Let $D$ be an \ac{RDF} dataset and $r\in D$ be an \ac{IRI} resource in that dataset.
 
 We define the \textbf{neighbourhood} $\textit{neighbours}(r)$ of $r$ in $D$ as the set of triples that contain $r$ as their subject.
 Formally, $\textit{neighbours}(r) \coloneq \{ (s, p, o) \in D \mid s \equiv r \}$.\\
 
 Let $k\in\mathbb{N} > 0$.
-The \ac{CBD} $\textit{CBD}(r, k)$ of a resource $r$ in $D$ is then recursively defined per \autoref{eq:cbd} where $\textit{CBD}(r, 0) \coloneq r$ and $\textit{CBD}(r, 1) \coloneq \textit{neighbours}(r)$.
+The \ac{SCBD} $\textit{SCBD}(r, k)$ of a resource $r$ in $D$ is then recursively defined per \autoref{eq:cbd} where $\textit{SCBD}(r, 0) \coloneq \emptyset$ and $\textit{SCBD}(r, 1) \coloneq \textit{neighbours}(r)$.
 
 \begin{equation}
-  \textit{CBD}(r, k) \coloneq \textit{CBD}(r, k-1) \cup \left( \bigcup_{(s, p, o) \in \textit{CBD}(r, k-1)} \textit{neighbours}(o) \right)
+  \textit{SCBD}(r, k) \coloneq \textit{SCBD}(r, k-1) \cup \left( \bigcup_{(s, p, o) \in \textit{SCBD}(r, k-1)} \textit{neighbours}(o) \right)
   \label{eq:cbd}
 \end{equation}
 
 \subsection{The \texorpdfstring{$F_\beta$}{F-beta}-Score}
+\label{ssec:fscore}
 The $F_\beta$-score is a measure of a tests accuracy, or more abstract, a measure of correspondence between two sets.
 Let $A, B$ be two sets, where we call $A$ the evaluated set and $B$ the reference set.
 We define the precision and the recall of $A$ w.r.t. $B$ per \autoref{eq:precision} and \autoref{eq:recall}, respectively.
@@ -318,7 +318,6 @@ The $F_\beta$-score is then defined as the weighted harmonic mean of recall and 
 A directed graph is a pair $\mathbf{G}=(\mathbf{V},\mathbf{E})$, where $\mathbf{V}$ denotes a finite set, called vertices, and $\mathbf{E}\subseteq \mathbf{V} \times \mathbf{V}$ denotes a set of 2-tuples, called edges.
 An entry $(u,v)\in \mathbf{E}$ represents a directed edge from $u$ to $v$.
 
-
 A sequence of edges $((u_1,v_1),\dots,(u_n,v_n))\in \mathbf{E}^n$ for which $v_k=u_{k+1}$ $\forall 1\leq k \leq n-1$ holds, is called a walk of length $n$ from $u_1$ to $v_n$ in $\mathbf{G}$.\\
 
 We call a directed graph $\mathbf{G}=(\mathbf{V},\mathbf{E})$ \acf{DAG} iff:
@@ -327,6 +326,6 @@ We call a directed graph $\mathbf{G}=(\mathbf{V},\mathbf{E})$ \acf{DAG} iff:
   \item there exists no walk from $v$ to itself
 \end{enumerate}
 
-Note that the second criteria is equivalent to the the demand that all walks in $\mathbf{G}$ are of finite length.
+Note that the second criterion is equivalent to the the demand that all walks in $\mathbf{G}$ are of finite length.
 
 

@@ -1,6 +1,48 @@
 \chapter{Conclusion \& Future Work}
+\label{sec:summary}
+
+In this chapter we conclude this thesis by summarizing our contributions and verifying that we met the design goals and answered the research question we have defined in \autoref{sec:goals}.\\
+
+To remind the reader, our respective design goals and research questions were:
+
+\begin{itemize}
+  \item[\textbf{(G1)}] \ac{DEER2} should be highly modular
+  \item[\textbf{(G2)}] \ac{DEER2} should represent \ac{RDF} dataset enrichment workflows efficiently as \acp{DAG}
+  \item[\textbf{(G3)}] \ac{DEER2} should include an optimized, \ac{GP} based learning algorithm for automatic configuration of \ac{RDF} dataset enrichment workflows
+  \item[\textbf{(G4)}] \ac{DEER2} should improve on all of the identified shortcomings of \ac{DEER}.
+\end{itemize}
+
+\begin{itemize}
+  \item[\textbf{(Q1)}] What is the optimal set of hyperparameters?
+  \item[\textbf{(Q2)}] How does our approach perform on real world datasets?
+\end{itemize}
+
 \label{ch:conclusion}
 \section{Summary}
-\label{sec:summary}
+In this thesis, we have developed a theory of \ac{DAG}-shaped \ac{RDF} dataset enrichment based on an analysis of a previous approach that did only consider linear enrichment specifications.
+Therefore, we regard design goal \textbf{(G2)} as met.
+Based on this theory, we implemented a tool for \ac{RDF} dataset enrichment with a set of eleven standard enrichment operators.
+We demonstrated the modularity in accordance with the theory, which makes no assumptions on the nature of enrichment operators other than them operating on \ac{RDF} data, thus satisfying design goal \textbf{(G1)}.\\
+
+In order to narrow down the scope of this work, we introduced a classification of enrichment graphs and identified the subclass of inherently confluent enrichment graphs as the object of our study.
+Subsequently, we defined an efficient representation of \emph{inherently confluent} enrichment graphs called enrichment tables, which we then used as starting point to define our \acf{GP}-based learning algorithm.\\
+
+In order to improve the performance of our learning algorithm, we developed a method called genotype compaction alongside three semantic genetic operators, namely the graph merging crossover, the precondition mutation and the postcondition mutation, satisfying goal \textbf{(G3)}.
+The pre- and postcondition broadcasting mutation operators cope with information masking and our novel fitness function can more adequatly measure small improvements in the learning process.
+Therefore, we also regard \textbf{(Q4)} as met. \\
+
+In the evaluation chapter we rigorously identified the set of optimal hyperparameters offspring fraction $\alpha=1.0$, mutation probability $\sigma=0.5$ and mutation rate $\rho=0.5$ for our full approach, therefore \textbf{(Q1)} is answered.
+Moreover, we have shown that our algorithm can perform well on real world datasets with an average execution time of about $16$ seconds and a mean solution quality of $99\%$ within a $95\%$-confidence interval of $\pm 0.6\%$ after 500 generations, thus giving an answer for \textbf{(Q2)}.
+
+
 \section{Future Work}
 \label{sec:futurework}
+
+In future work, we will investigate research relating to the automated enrichment of \ac{RDF} datasets in three directions.
+
+The first research direction will be to develop a sound theory of self-configuration heuristics, which could \eg make use of graph embedding techniques or variations on approximate solutions to the subgraph isomorphism problem.\\
+
+Another direction of interest is to extend the class of enrichment graphs for which we investigate learning methods, eventually developing multi-objective algorithms.
+Such algorithms could be used in order to automate the provision of \ac{RDF} datasets for different types of consumers given the same input datasets, thereby exploiting parallelism.\\
+
+Finally, we would like to develop methods for improving the scalability of our approach in a big data setting.
